@@ -86,8 +86,10 @@
   const { $, esc, api, fmtDate, wc } = PEM;
   const root = $("#root");
   const toast = (m) => { const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); };
-  const STATUS_LABEL = { applied: "Applied", assessment: "Assessment open", assessment_done: "Assessment in", test: "Test edit open", test_done: "Test edit in", call: "Call", hired: "Hired", rejected: "Rejected" };
-  const COLS = [["applied", "New applications"], ["assessment", "Assessment open"], ["assessment_done", "Assessment submitted"], ["test", "Test edit open"], ["test_done", "Test edit submitted — score"], ["call", "Call"], ["hired", "Hired"], ["rejected", "Rejected"]];
+  const testNoun = (r) => (r?.stages?.test?.noun || "test edit");
+  const TestNoun = (r) => { const n = testNoun(r); return n.charAt(0).toUpperCase() + n.slice(1); };
+  const STATUS_LABEL = { applied: "Applied", assessment: "Assessment open", assessment_done: "Assessment in", test: "Test open", test_done: "Test in", call: "Call", hired: "Hired", rejected: "Rejected" };
+  const COLS = [["applied", "New applications"], ["assessment", "Assessment open"], ["assessment_done", "Assessment submitted"], ["test", "Test open"], ["test_done", "Test submitted — score"], ["call", "Call"], ["hired", "Hired"], ["rejected", "Rejected"]];
 
   let me, roles, brand, roleSlug, list = [], selected = null;
 
@@ -203,7 +205,7 @@
       ${sc.floors.reasons.length ? `<div class="flag">Floors: ${esc(sc.floors.reasons.join(" · "))}</div>` : ""}
       <div class="actions" style="margin:14px 0 4px">
         ${c.status === "applied" ? `<button class="btn sm" data-status="assessment">Unlock assessment</button>` : ""}
-        ${["assessment_done", "assessment"].includes(c.status) ? `<button class="btn sm" data-status="test">Unlock test edit (72h)</button>` : ""}
+        ${["assessment_done", "assessment"].includes(c.status) ? `<button class="btn sm" data-status="test">Unlock ${esc(testNoun(role))} (72h)</button>` : ""}
         ${c.status === "test_done" ? `<button class="btn sm" data-status="call">Advance to call</button>` : ""}
         ${c.status === "call" ? `<button class="btn sm" data-status="hired">Mark hired</button>` : ""}
         ${c.status !== "rejected" ? `<button class="btn danger sm" data-status="rejected">Reject</button>` : `<button class="btn ghost sm" data-status="applied">Reopen</button>`}
@@ -211,11 +213,11 @@
         ${me.ai ? `<button class="btn ghost sm" id="rescore">Re-run AI scoring</button>` : ""}
         <button class="btn ghost sm" id="del" style="margin-left:auto;color:var(--bad)">Delete</button>
       </div>
-      <div class="tabs"><button class="on" data-tab="score">Score</button><button data-tab="app">Application</button><button data-tab="assess">Written answers</button><button data-tab="test">Test edit</button><button data-tab="notes">Notes & timeline</button></div>
+      <div class="tabs"><button class="on" data-tab="score">Score</button><button data-tab="app">Application</button><button data-tab="assess">Written answers</button><button data-tab="test">${esc(TestNoun(role))}</button><button data-tab="notes">Notes & timeline</button></div>
 
       <div class="tab on" id="tab-score">
         ${ai.summary ? `<div class="callout"><span class="ai-badge">AI</span>${esc(ai.summary)}${ai.english ? ` <br><small style="color:var(--muted-2)">Written English ${ai.english.score}/5 — ${esc(ai.english.rationale)}</small>` : ""}</div>` : me.ai ? `<p class="empty">AI scoring runs when written answers come in.</p>` : ""}
-        <h3 style="margin-top:18px">Skill — from the test edit</h3>
+        <h3 style="margin-top:18px">Skill — from the ${esc(testNoun(role))}</h3>
         <div class="rubric">${role.scoring.skill.criteria.map((cr) => seg("skill", cr.id, cr.name, `${cr.anchors["1"]} · ${cr.anchors["3"]} · ${cr.anchors["5"]}`, sc.skill.scores[cr.id], null, cr.weight > 1 ? `×${cr.weight}` : "", sc.skill.auto[cr.id] ? `Self-rated ${sc.skill.auto[cr.id].score}/5` : "")).join("")}</div>
         <h3 style="margin-top:22px">Values</h3>
         <div class="rubric">${role.values.map((v) => { const a = role.scoring.values.anchors[v.key] || {}; const aiv = ai.values?.[v.key]; return seg("values", v.key, v.name, `${a["1"]} · ${a["3"]} · ${a["5"]}`, sc.values.scores[v.key], sc.values.source[v.key] === "ai" ? aiv?.score : null, "", aiv ? `AI ${aiv.score}/5 — ${aiv.rationale}` : ""); }).join("")}</div>
@@ -282,14 +284,14 @@
         <div class="field"><label>Email *</label><input id="a_email" type="email" autocomplete="off"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
           <div class="field"><label>Country</label><input id="a_country"></div>
-          <div class="field"><label>Years editing</label><input id="a_years" type="number" min="0"></div>
+          <div class="field"><label>Years of experience</label><input id="a_years" type="number" min="0"></div>
         </div>
         <div class="field"><label>Portfolio link (optional)</label><input id="a_portfolio" type="url" placeholder="https://"></div>
         <div class="field"><label>Private note (optional)</label><textarea id="a_note" placeholder="e.g. Interviewed Oct 6, strong on motion, check pacing"></textarea></div>
         <div class="field"><label>Start them at</label>
           <div class="rating" style="gap:10px">
             <label class="pill opt"><input type="radio" name="startAt" value="assessment" checked> Written assessment</label>
-            <label class="pill opt"><input type="radio" name="startAt" value="test"> Test edit (72h window starts now)</label>
+            <label class="pill opt"><input type="radio" name="startAt" value="test"> ${esc(TestNoun(role))} (72h window starts now)</label>
           </div></div>
         <div class="field"><label class="pill opt"><input type="checkbox" id="a_send" ${me.email ? "checked" : "disabled"}> ${me.email ? "Email them the invite now" : "Emails are off — you'll copy the link"}</label></div>
         <div class="form-error" id="a_err" hidden></div>

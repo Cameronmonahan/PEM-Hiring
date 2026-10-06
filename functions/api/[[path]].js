@@ -214,7 +214,7 @@ async function handleAdmin(request, env, parts, url) {
     if (body.what === "email") {
       const to = body.to || env.NOTIFY_EMAIL || brand.fromEmail;
       if (!env.RESEND_API_KEY) return json({ ok: false, error: "RESEND_API_KEY is not set in Cloudflare" });
-      const r = await sendEmail(env, { to, subject: `${brand.shortName} Hiring — test email`, html: templates.testReceived(getRole(roles[0].slug)).html.replace("Your test edit is in.", "This is a test email from your hiring dashboard. If you can read this, candidate emails are working.") });
+      const r = await sendEmail(env, { to, subject: `${brand.shortName} Hiring — test email`, html: templates.testReceived(getRole(roles[0].slug)).html.replace(/Your test \w+ is in\./, "This is a test email from your hiring dashboard. If you can read this, candidate emails are working.") });
       return json(r.ok ? { ok: true, message: `Sent to ${to}` } : { ok: false, error: r.error || "Send failed" });
     }
     if (body.what === "ai") {
