@@ -18,6 +18,7 @@ window.PEM = (() => {
     document.querySelectorAll("[data-logo]").forEach((img) => { img.src = brand.logoGold; img.alt = brand.company; });
     document.querySelectorAll("[data-icon]").forEach((img) => { img.src = brand.icon; });
     document.querySelectorAll("[data-company]").forEach((el) => { el.textContent = brand.company; });
+    if (brand.website) document.querySelectorAll("[data-home]").forEach((a) => { a.href = brand.website; });
     const ico = document.querySelector("link[rel=icon]"); if (ico) ico.href = brand.icon;
   }
 
