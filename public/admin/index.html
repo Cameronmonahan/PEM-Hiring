@@ -114,13 +114,39 @@
         <a class="btn ghost sm" href="/?role=${roleSlug}" target="_blank">Public page ↗</a>
         <button class="btn ghost sm" id="copyLink">Copy apply link</button>
         <span style="flex:1"></span>
-        <span class="pill">${me.ai ? "AI scoring on" : "AI scoring off"}</span><span class="pill">${me.email ? "Emails on" : "Emails off — copy links manually"}</span>
+        <button class="btn ghost sm" id="setupBtn" style="${me.ai && me.email ? "" : "border-color:var(--warn);color:var(--warn)"}">Setup ${me.ai && me.email ? "✓" : "— " + (2 - me.ai - me.email) + " to go"}</button>
         <button class="btn ghost sm" id="logout">Sign out</button>
+      </div>
+      <div class="panel" id="setup" hidden style="margin-bottom:18px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h3 style="margin:0">Setup</h3><button class="btn ghost sm" id="setupClose">Close</button></div>
+        <div class="totals" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+          <div class="tot" style="text-align:left">
+            <div style="display:flex;justify-content:space-between;align-items:center"><b>AI scoring</b><span class="rec ${me.ai ? "strong" : "no"}">${me.ai ? "On" : "Off"}</span></div>
+            <p style="font-size:13px;margin:8px 0">Scores every written answer and each core value the moment a candidate submits. You override with one click.</p>
+            ${me.ai ? `<button class="btn sm" data-check="ai">Test it</button>` : `<p style="font-size:12.5px;color:var(--muted-2);margin:0">Add <code>ANTHROPIC_API_KEY</code> in Cloudflare Pages → Settings → Variables and Secrets, then redeploy.</p>`}
+          </div>
+          <div class="tot" style="text-align:left">
+            <div style="display:flex;justify-content:space-between;align-items:center"><b>Candidate emails</b><span class="rec ${me.email ? "strong" : "no"}">${me.email ? "On" : "Off"}</span></div>
+            <p style="font-size:13px;margin:8px 0">Branded emails at every step, from ${esc(brand.fromEmail)}. ${me.notify ? `Alerts go to ${esc(me.notify)}.` : "Set <code>NOTIFY_EMAIL</code> to get alerts yourself."}</p>
+            ${me.email ? `<div class="actions" style="margin:0"><input id="testTo" placeholder="your@email.com" value="${esc(me.notify || brand.fromEmail)}" style="font:inherit;font-size:13px;color:var(--white);background:rgba(255,255,255,.04);border:1px solid var(--line-strong);border-radius:8px;padding:8px 10px;flex:1;min-width:180px"><button class="btn sm" data-check="email">Send test</button></div>` : `<p style="font-size:12.5px;color:var(--muted-2);margin:0">Add <code>RESEND_API_KEY</code> (and optionally <code>NOTIFY_EMAIL</code>) in Cloudflare, then redeploy.</p>`}
+          </div>
+        </div>
+        <div id="checkResult" class="empty"></div>
       </div>
       <div class="grid"><div class="panel pipeline" id="pipe"></div><div class="panel detail" id="detail"><p class="empty">Select a candidate.</p></div></div>`;
     $("#roleSel").onchange = (e) => { roleSlug = e.target.value; localStorage.setItem("pem_admin_role", roleSlug); selected = null; loadList(); };
     $("#copyLink").onclick = () => { navigator.clipboard.writeText(`${me.careersUrl}/?role=${roleSlug}`); toast("Apply link copied"); };
     $("#logout").onclick = async () => { await api("/admin/logout", { method: "POST" }); location.reload(); };
+    const setupOpen = !(me.ai && me.email) && !localStorage.getItem("pem_setup_seen");
+    $("#setup").hidden = !setupOpen;
+    $("#setupBtn").onclick = () => { $("#setup").hidden = !$("#setup").hidden; };
+    $("#setupClose").onclick = () => { $("#setup").hidden = true; localStorage.setItem("pem_setup_seen", "1"); };
+    root.querySelectorAll("[data-check]").forEach((b) => b.onclick = async () => {
+      const out = $("#checkResult"); out.textContent = "Checking…"; b.disabled = true;
+      try { const r = await api("/admin/check", { method: "POST", body: { what: b.dataset.check, to: $("#testTo")?.value } }); out.innerHTML = r.ok ? `<span style="color:var(--ok)">✓ ${esc(r.message)}</span>` : `<span class="flag">✗ ${esc(r.error)}</span>`; }
+      catch (e) { out.innerHTML = `<span class="flag">✗ ${esc(e.message)}</span>`; }
+      b.disabled = false;
+    });
     renderPipeline();
     if (selected) renderDetail();
   }

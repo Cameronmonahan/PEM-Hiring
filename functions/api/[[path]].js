@@ -206,7 +206,25 @@ async function handleAdmin(request, env, parts, url) {
   }
   if (sub === "logout") return json({ ok: true }, 200, { "set-cookie": "pem_admin=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0" });
   if (!(await checkSession(request, env))) return json({ error: "Unauthorized" }, 401);
-  if (sub === "me") return json({ ok: true, ai: !!env.ANTHROPIC_API_KEY, email: !!env.RESEND_API_KEY, careersUrl: brand.careersUrl });
+  if (sub === "me") return json({ ok: true, ai: !!env.ANTHROPIC_API_KEY, email: !!env.RESEND_API_KEY, notify: env.NOTIFY_EMAIL || null, careersUrl: brand.careersUrl });
+
+  // Setup checks: verify each upgrade actually works before a real candidate hits it.
+  if (sub === "check" && request.method === "POST") {
+    const body = await readJson(request);
+    if (body.what === "email") {
+      const to = body.to || env.NOTIFY_EMAIL || brand.fromEmail;
+      if (!env.RESEND_API_KEY) return json({ ok: false, error: "RESEND_API_KEY is not set in Cloudflare" });
+      const r = await sendEmail(env, { to, subject: `${brand.shortName} Hiring — test email`, html: templates.testReceived(getRole(roles[0].slug)).html.replace("Your test edit is in.", "This is a test email from your hiring dashboard. If you can read this, candidate emails are working.") });
+      return json(r.ok ? { ok: true, message: `Sent to ${to}` } : { ok: false, error: r.error || "Send failed" });
+    }
+    if (body.what === "ai") {
+      if (!env.ANTHROPIC_API_KEY) return json({ ok: false, error: "ANTHROPIC_API_KEY is not set in Cloudflare" });
+      const res = await fetch("https://api.anthropic.com/v1/messages", { method: "POST", headers: { "content-type": "application/json", "x-api-key": env.ANTHROPIC_API_KEY, "anthropic-version": "2023-06-01" }, body: JSON.stringify({ model: "claude-sonnet-4-5", max_tokens: 20, messages: [{ role: "user", content: "Reply with the single word OK." }] }) });
+      if (!res.ok) return json({ ok: false, error: `Anthropic API returned ${res.status}: ${(await res.text()).slice(0, 200)}` });
+      return json({ ok: true, message: "AI scoring is live" });
+    }
+    return json({ error: "Unknown check" }, 400);
+  }
   if (sub === "roles") return json({ roles, brand });
 
   if (sub === "candidates") {
