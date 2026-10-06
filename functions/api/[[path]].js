@@ -229,6 +229,32 @@ async function handleAdmin(request, env, parts, url) {
 
   if (sub === "candidates") {
     const cid = parts[2];
+
+    // Manually add a candidate you've already met and drop them in at a later stage.
+    if (cid === "create" && request.method === "POST") {
+      const body = await readJson(request);
+      const role = getRole(body.role_slug);
+      if (!role) return json({ error: "Role not found" }, 404);
+      const name = String(body.name || "").trim(), email = String(body.email || "").trim().toLowerCase();
+      if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return json({ error: "Name and a valid email are required" }, 400);
+      const startAt = ["assessment", "test", "applied"].includes(body.startAt) ? body.startAt : "assessment";
+      const dup = await env.DB.prepare("SELECT id FROM candidates WHERE role_slug=? AND email=?").bind(role.slug, email).first();
+      if (dup) return json({ error: "A candidate with this email already exists for this role" }, 409);
+      const application = { name, email, ...(body.application || {}), _addedManually: true };
+      const nid = id(), tok = token(), t = now();
+      const due = startAt === "test" ? new Date(Date.now() + role.flow.testDeadlineHours * 3600e3).toISOString() : null;
+      await env.DB.prepare(`INSERT INTO candidates (id, token, role_slug, name, email, status, auto_flags, application, notes, test_unlocked_at, test_due_at, created_at, updated_at)
+        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(nid, tok, role.slug, name, email, startAt, "[]", JSON.stringify(application), JSON.stringify(body.note ? [{ at: t, text: String(body.note).slice(0, 4000) }] : []), due ? t : null, due, t, t).run();
+      await logEvent(env, nid, "added_manually", `Started at: ${startAt}`);
+      const link = candidateLink(url, tok);
+      let emailResult = { skipped: true };
+      if (body.send) {
+        const tpl = startAt === "test" ? templates.testUnlocked(role, link, fmtDue(due)) : startAt === "assessment" ? templates.assessmentUnlocked(role, link) : null;
+        if (tpl) emailResult = await sendEmail(env, { to: email, ...tpl });
+      }
+      return json({ ok: true, id: nid, link, email: emailResult });
+    }
+
     if (!cid) {
       const roleSlug = url.searchParams.get("role");
       const rows = roleSlug

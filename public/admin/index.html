@@ -69,6 +69,9 @@
   .login{max-width:420px;margin:60px auto}
   textarea.notebox{width:100%;font:inherit;font-size:14px;color:var(--white);background:rgba(255,255,255,.04);border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-height:70px}
   .empty{color:var(--muted-2);font-size:13px;padding:10px 0}
+  .pill.opt{display:inline-flex;align-items:center;gap:8px;width:max-content;justify-self:start;cursor:pointer;padding:9px 14px;text-transform:none;letter-spacing:0;font-size:13px;color:var(--white)}
+  .pill.opt input{accent-color:var(--gold);margin:0}
+  .pill.opt:has(input:checked){border-color:var(--gold);background:var(--gold-dim)}
 </style>
 </head>
 <body>
@@ -113,6 +116,7 @@
         <select id="roleSel">${roles.map((r) => `<option value="${r.slug}" ${r.slug === roleSlug ? "selected" : ""}>${esc(r.title)} (${r.status})</option>`).join("")}</select>
         <a class="btn ghost sm" href="/?role=${roleSlug}" target="_blank">Public page ↗</a>
         <button class="btn ghost sm" id="copyLink">Copy apply link</button>
+        <button class="btn sm" id="addBtn">+ Add candidate</button>
         <span style="flex:1"></span>
         <button class="btn ghost sm" id="setupBtn" style="${me.ai && me.email ? "" : "border-color:var(--warn);color:var(--warn)"}">Setup ${me.ai && me.email ? "✓" : "— " + (2 - me.ai - me.email) + " to go"}</button>
         <button class="btn ghost sm" id="logout">Sign out</button>
@@ -136,6 +140,7 @@
       <div class="grid"><div class="panel pipeline" id="pipe"></div><div class="panel detail" id="detail"><p class="empty">Select a candidate.</p></div></div>`;
     $("#roleSel").onchange = (e) => { roleSlug = e.target.value; localStorage.setItem("pem_admin_role", roleSlug); selected = null; loadList(); };
     $("#copyLink").onclick = () => { navigator.clipboard.writeText(`${me.careersUrl}/?role=${roleSlug}`); toast("Apply link copied"); };
+    $("#addBtn").onclick = showAddForm;
     $("#logout").onclick = async () => { await api("/admin/logout", { method: "POST" }); location.reload(); };
     const setupOpen = !(me.ai && me.email) && !localStorage.getItem("pem_setup_seen");
     $("#setup").hidden = !setupOpen;
@@ -188,6 +193,7 @@
         <span class="rec ${sc.recommendation}">${{ strong: "Strong — call", advance: "Advance to call", no: "Below bar", incomplete: "Scoring incomplete" }[sc.recommendation]}</span>
       </div>
       ${c.auto_flags?.length ? `<div class="form-error" style="margin-top:12px">Auto-rejected: ${esc(c.auto_flags.join("; "))}</div>` : ""}
+      ${app._addedManually ? `<p style="margin-top:10px"><span class="pill">Added manually — skipped the application</span></p>` : ""}
       <div class="totals">
         <div class="tot"><div class="v ${scClass(sc.written.score, 3)}">${fmt(sc.written.score)}</div><small>Written (AI)</small></div>
         <div class="tot"><div class="v ${scClass(sc.skill.score)}">${fmt(sc.skill.score)}</div><small>Skill · ${sc.skill.filled}/${sc.skill.total}</small></div>
@@ -261,6 +267,48 @@
     if ($("#rescore")) $("#rescore").onclick = async () => { toast("Scoring…"); try { await api(`/admin/candidates/${c.id}/rescore`, { method: "POST" }); await loadList(); await select(c.id); toast("AI scores updated"); } catch (e) { toast(e.message); } };
     $("#del").onclick = async () => { if (!confirm(`Delete ${c.name} permanently?`)) return; await api(`/admin/candidates/${c.id}`, { method: "DELETE" }); selected = null; location.hash = ""; await loadList(); $("#detail").innerHTML = `<p class="empty">Select a candidate.</p>`; };
     $("#addNote").onclick = async () => { const text = $("#noteText").value.trim(); if (!text) return; await api(`/admin/candidates/${c.id}/notes`, { method: "POST", body: { text } }); await select(c.id); d.querySelector('[data-tab="notes"]').click(); };
+  }
+
+  function showAddForm() {
+    const role = roles.find((r) => r.slug === roleSlug);
+    selected = null; location.hash = ""; renderPipeline();
+    const d = $("#detail");
+    d.innerHTML = `
+      <p class="eyebrow">${esc(role.title)}</p><h1>Add a candidate</h1>
+      <p>For someone you've already met or interviewed. Fill in what you know and choose where they start — they'll skip everything before it.</p>
+      <form id="addForm" style="margin-top:14px">
+        <div class="field"><label>Full name *</label><input id="a_name" autocomplete="off"></div>
+        <div class="field"><label>Email *</label><input id="a_email" type="email" autocomplete="off"></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+          <div class="field"><label>Country</label><input id="a_country"></div>
+          <div class="field"><label>Years editing</label><input id="a_years" type="number" min="0"></div>
+        </div>
+        <div class="field"><label>Portfolio link (optional)</label><input id="a_portfolio" type="url" placeholder="https://"></div>
+        <div class="field"><label>Private note (optional)</label><textarea id="a_note" placeholder="e.g. Interviewed Oct 6, strong on motion, check pacing"></textarea></div>
+        <div class="field"><label>Start them at</label>
+          <div class="rating" style="gap:10px">
+            <label class="pill opt"><input type="radio" name="startAt" value="assessment" checked> Written assessment</label>
+            <label class="pill opt"><input type="radio" name="startAt" value="test"> Test edit (72h window starts now)</label>
+          </div></div>
+        <div class="field"><label class="pill opt"><input type="checkbox" id="a_send" ${me.email ? "checked" : "disabled"}> ${me.email ? "Email them the invite now" : "Emails are off — you'll copy the link"}</label></div>
+        <div class="form-error" id="a_err" hidden></div>
+        <div class="actions"><button class="btn" type="submit" id="a_submit">Add candidate</button><button class="btn ghost" type="button" id="a_cancel">Cancel</button></div>
+      </form>`;
+    $("#a_cancel").onclick = () => { d.innerHTML = `<p class="empty">Select a candidate.</p>`; };
+    $("#addForm").onsubmit = async (e) => {
+      e.preventDefault();
+      const btn = $("#a_submit"); btn.disabled = true;
+      const application = {};
+      if ($("#a_country").value.trim()) application.country = $("#a_country").value.trim();
+      if ($("#a_years").value) application.years = Number($("#a_years").value);
+      if ($("#a_portfolio").value.trim()) application.portfolio_short = $("#a_portfolio").value.trim();
+      try {
+        const r = await api("/admin/candidates/create", { method: "POST", body: { role_slug: roleSlug, name: $("#a_name").value, email: $("#a_email").value, application, note: $("#a_note").value, startAt: d.querySelector("input[name=startAt]:checked").value, send: $("#a_send").checked } });
+        navigator.clipboard.writeText(r.link).catch(() => {});
+        toast(r.email?.ok ? "Added and emailed. Link also copied." : "Added. Their link is copied — send it to them.");
+        await loadList(); await select(r.id);
+      } catch (err) { btn.disabled = false; $("#a_err").textContent = err.message; $("#a_err").hidden = false; }
+    };
   }
 
   function seg(grp, key, name, anchors, val, aiVal, weight, hint) {
