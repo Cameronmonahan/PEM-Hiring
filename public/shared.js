@@ -33,7 +33,7 @@ window.PEM = (() => {
 
   function renderField(f) {
     const req = f.required ? '<span class="req">*</span>' : "";
-    const help = f.help ? `<p class="help">${esc(f.help)}</p>` : "";
+    const help = f.help ? `<p class="help">${esc(f.help)}${f.helpLink ? ` <a href="${esc(f.helpLink.url)}" target="_blank" rel="noopener">${esc(f.helpLink.label)} ↗</a>` : ""}</p>` : "";
     const group = f.group ? `<div class="group-title">${esc(f.group)}</div>` : "";
     let input = "";
     const common = `id="f_${f.id}" name="${f.id}" ${f.required ? "required" : ""}`;

@@ -11,10 +11,26 @@
   ],
   "processNote": "Our process has three steps, all before an interview. We reply to everyone within 24 hours of each step.",
   "values": [
-    { "key": "bravery", "name": "Creative Bravery", "desc": "Push past \"safe\" and generic." },
-    { "key": "excellence", "name": "Excellence Over Easy", "desc": "Quality matters; don't rush or choose the easy route." },
-    { "key": "client", "name": "Client-Obsessed", "desc": "Care deeply about the client's results, not just completing deliverables." },
-    { "key": "ownership", "name": "Ownership Mentality", "desc": "Act like it's your company, not just a job." }
+    {
+      "key": "bravery",
+      "name": "Creative Bravery",
+      "desc": "Push past \"safe\" and generic."
+    },
+    {
+      "key": "excellence",
+      "name": "Excellence Over Easy",
+      "desc": "Quality matters; don't rush or choose the easy route."
+    },
+    {
+      "key": "client",
+      "name": "Client-Obsessed",
+      "desc": "Care deeply about the client's results, not just completing deliverables."
+    },
+    {
+      "key": "ownership",
+      "name": "Ownership Mentality",
+      "desc": "Act like it's your company, not just a job."
+    }
   ],
   "flow": {
     "autoAdvanceToAssessment": true,
@@ -26,66 +42,315 @@
       "title": "Application",
       "blurb": "About 10 minutes. We'll ask for three specific portfolio pieces, not a reel.",
       "fields": [
-        { "id": "name", "label": "Full name", "type": "text", "required": true },
-        { "id": "email", "label": "Email", "type": "email", "required": true },
-        { "id": "country", "label": "Country", "type": "text", "required": true },
-        { "id": "timezone", "label": "Time zone", "type": "select", "required": true,
-          "options": ["UTC-8 Pacific", "UTC-7 Mountain", "UTC-6 Central", "UTC-5 Eastern / Colombia / Peru", "UTC-4 Atlantic / Chile / Bolivia", "UTC-3 Argentina / Brazil / Uruguay", "Other"] },
-        { "id": "years", "label": "Years editing professionally", "type": "number", "required": true, "min": 0, "max": 40,
-          "knockout": { "lt": 5, "reason": "Under 5 years professional editing" } },
-        { "id": "software", "label": "Primary editing software", "type": "select", "required": true,
-          "options": ["Premiere Pro", "DaVinci Resolve", "Final Cut Pro", "CapCut", "Other"],
-          "knockout": { "notIn": ["Premiere Pro"], "reason": "Primary NLE is not Premiere Pro" } },
-        { "id": "ae", "label": "After Effects proficiency", "type": "select", "required": true,
-          "options": ["None", "Basic — I can adjust existing templates", "I build my own motion templates"],
-          "knockout": { "in": ["None"], "reason": "No After Effects" },
-          "autoScore": { "map": { "None": 1, "Basic — I can adjust existing templates": 3, "I build my own motion templates": 5 }, "skill": "motion", "note": "self-reported" } },
-        { "id": "log", "label": "Color correction of log footage", "type": "select", "required": true,
-          "options": ["Never", "Basic — I apply a LUT", "I correct and grade log footage by hand"],
-          "knockout": { "in": ["Never"], "reason": "No log color correction" },
-          "autoScore": { "map": { "Never": 1, "Basic — I apply a LUT": 2, "I correct and grade log footage by hand": 4 }, "skill": "color", "note": "self-reported" } },
-        { "id": "salary", "label": "Monthly salary expectation", "type": "currency", "required": true,
-          "currencies": ["USD", "CAD", "MXN", "BRL", "ARS", "COP", "CLP", "PEN", "UYU", "GTQ", "CRC", "DOP", "Other"],
-          "help": "In your local currency. We'll convert when reviewing." },
-        { "id": "start", "label": "Earliest start date", "type": "date", "required": true },
-        { "id": "hours", "label": "Hours per week available", "type": "select", "required": true,
-          "options": ["40+", "30–40", "20–30", "Under 20"],
-          "knockout": { "in": ["Under 20"], "reason": "Under 20 hours per week" } },
-        { "id": "english", "label": "How comfortable are you speaking English on a client call?", "type": "rating", "required": true, "min": 1, "max": 5,
-          "scaleLabels": ["Not comfortable", "Fluent and confident"],
-          "knockout": { "lt": 3, "reason": "English comfort below 3/5" } },
-        { "id": "portfolio_short", "label": "Your single best short-form social edit (vertical, under 60s)", "type": "url", "required": true, "group": "Portfolio — three specific links, not a reel" },
-        { "id": "portfolio_short_role", "label": "Your exact role on this piece", "type": "text", "required": true, "placeholder": "e.g. Sole editor, color, motion graphics" },
-        { "id": "portfolio_long", "label": "Your single best long-form piece (5+ minutes)", "type": "url", "required": true },
-        { "id": "portfolio_long_role", "label": "Your exact role on this piece", "type": "text", "required": true },
-        { "id": "portfolio_product", "label": "Your single best product or commercial edit", "type": "url", "required": true },
-        { "id": "portfolio_product_role", "label": "Your exact role on this piece", "type": "text", "required": true },
-        { "id": "proudest", "label": "Of the three pieces above, which are you proudest of and why?", "type": "textarea", "required": true, "maxWords": 150, "help": "3–5 sentences.",
-          "aiScore": { "tests": ["bravery", "client"], "strong": "Talks about a specific creative decision and what it did for the client. Weak answers talk about gear or speed." } }
+        {
+          "id": "name",
+          "label": "Full name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "country",
+          "label": "Country",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "timezone",
+          "label": "Time zone",
+          "type": "select",
+          "required": true,
+          "options": [
+            "UTC-8 Pacific",
+            "UTC-7 Mountain",
+            "UTC-6 Central",
+            "UTC-5 Eastern / Colombia / Peru",
+            "UTC-4 Atlantic / Chile / Bolivia",
+            "UTC-3 Argentina / Brazil / Uruguay",
+            "Other"
+          ]
+        },
+        {
+          "id": "years",
+          "label": "Years editing professionally",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 40,
+          "knockout": {
+            "lt": 5,
+            "reason": "Under 5 years professional editing"
+          }
+        },
+        {
+          "id": "software",
+          "label": "Primary editing software",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Premiere Pro",
+            "DaVinci Resolve",
+            "Final Cut Pro",
+            "CapCut",
+            "Other"
+          ],
+          "knockout": {
+            "notIn": [
+              "Premiere Pro"
+            ],
+            "reason": "Primary NLE is not Premiere Pro"
+          }
+        },
+        {
+          "id": "ae",
+          "label": "After Effects proficiency",
+          "type": "select",
+          "required": true,
+          "options": [
+            "None",
+            "Basic — I can adjust existing templates",
+            "I build my own motion templates"
+          ],
+          "knockout": {
+            "in": [
+              "None"
+            ],
+            "reason": "No After Effects"
+          },
+          "autoScore": {
+            "map": {
+              "None": 1,
+              "Basic — I can adjust existing templates": 3,
+              "I build my own motion templates": 5
+            },
+            "skill": "motion",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "log",
+          "label": "Color correction of log footage",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Never",
+            "Basic — I apply a LUT",
+            "I correct and grade log footage by hand"
+          ],
+          "knockout": {
+            "in": [
+              "Never"
+            ],
+            "reason": "No log color correction"
+          },
+          "autoScore": {
+            "map": {
+              "Never": 1,
+              "Basic — I apply a LUT": 2,
+              "I correct and grade log footage by hand": 4
+            },
+            "skill": "color",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "salary",
+          "label": "Monthly salary expectation",
+          "type": "currency",
+          "required": true,
+          "currencies": [
+            "USD",
+            "CAD",
+            "MXN",
+            "BRL",
+            "ARS",
+            "COP",
+            "CLP",
+            "PEN",
+            "UYU",
+            "GTQ",
+            "CRC",
+            "DOP",
+            "Other"
+          ],
+          "help": "In your local currency. We'll convert when reviewing."
+        },
+        {
+          "id": "start",
+          "label": "Earliest start date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "hours",
+          "label": "Hours per week available",
+          "type": "select",
+          "required": true,
+          "options": [
+            "40+",
+            "30–40",
+            "20–30",
+            "Under 20"
+          ],
+          "knockout": {
+            "in": [
+              "Under 20"
+            ],
+            "reason": "Under 20 hours per week"
+          }
+        },
+        {
+          "id": "english",
+          "label": "How comfortable are you speaking English on a client call?",
+          "type": "rating",
+          "required": true,
+          "min": 1,
+          "max": 5,
+          "scaleLabels": [
+            "Not comfortable",
+            "Fluent and confident"
+          ],
+          "knockout": {
+            "lt": 3,
+            "reason": "English comfort below 3/5"
+          }
+        },
+        {
+          "id": "portfolio_short",
+          "label": "Your single best short-form social edit (vertical, under 60s)",
+          "type": "url",
+          "required": true,
+          "group": "Portfolio — three specific links, not a reel"
+        },
+        {
+          "id": "portfolio_short_role",
+          "label": "Your exact role on this piece",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g. Sole editor, color, motion graphics"
+        },
+        {
+          "id": "portfolio_long",
+          "label": "Your single best long-form piece (5+ minutes)",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "portfolio_long_role",
+          "label": "Your exact role on this piece",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "portfolio_product",
+          "label": "Your single best product or commercial edit",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "portfolio_product_role",
+          "label": "Your exact role on this piece",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "proudest",
+          "label": "Of the three pieces above, which are you proudest of and why?",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 150,
+          "help": "3–5 sentences.",
+          "aiScore": {
+            "tests": [
+              "bravery",
+              "client"
+            ],
+            "strong": "Talks about a specific creative decision and what it did for the client. Weak answers talk about gear or speed."
+          }
+        }
       ]
     },
     "assessment": {
       "title": "Written Assessment",
       "blurb": "About 25 minutes. Six questions about how you think. Each answer is capped at 150 words.",
       "questions": [
-        { "id": "q1", "prompt": "Watch this PEM video and tell us: what works, what would you change, and why?", "link": "https://www.instagram.com/peakexposuremedia/", "linkLabel": "Watch the video", "maxWords": 150,
-          "tests": ["bravery"], "skill": "taste",
-          "strong": "Specific, confident critique of a real choice (the hook, a cut, the music). Not flattery, not \"it's great.\"" },
-        { "id": "q2", "prompt": "You get 3 hours of raw footage and a brief for a 20-minute YouTube video. Walk us through your first two hours of work.", "maxWords": 150,
-          "tests": ["excellence"], "skill": "process",
-          "strong": "A system: ingest, organize, selects or stringout, structure before cutting. Juniors start cutting immediately." },
-        { "id": "q3", "prompt": "A client says the edit \"doesn't feel right\" but can't say why. What do you do, step by step?", "maxWords": 150,
-          "tests": ["client", "ownership"],
-          "strong": "Asks diagnostic questions, offers two options, owns the fix. Doesn't blame the client or the brief." },
-        { "id": "q4", "prompt": "Tell us about a time a round of revisions frustrated you. What happened and what did you do?", "maxWords": 150,
-          "tests": ["ownership", "client"],
-          "strong": "Honest about the frustration, then describes what they changed in their own process. Red flag: the story is about how the client was wrong." },
-        { "id": "q5", "prompt": "Describe a time you pushed an edit somewhere safer would have been easier, and it paid off. What was the risk?", "maxWords": 150,
-          "tests": ["bravery"],
-          "strong": "A real creative risk with a real reason. Red flag: can't think of one, or the \"risk\" was a trendy transition." },
-        { "id": "q6", "prompt": "Look at our Instagram and one of our client accounts. In three sentences, describe our editing style and one thing you'd bring to it.", "links": [ { "label": "Peak Exposure Media", "url": "https://www.instagram.com/peakexposuremedia/" }, { "label": "Paragon Custom Construction", "url": "https://www.instagram.com/paragon_custom_construction" } ], "maxWords": 150,
-          "tests": ["excellence", "client"], "skill": "taste",
-          "strong": "Names concrete traits (cinematic, clean type, restrained pacing) and a contribution that fits rather than fights the style." }
+        {
+          "id": "q1",
+          "prompt": "Watch this PEM video and tell us: what works, what would you change, and why?",
+          "link": "https://www.instagram.com/p/Dd9qh1sBNxl/",
+          "linkLabel": "Watch the video",
+          "maxWords": 150,
+          "tests": [
+            "bravery"
+          ],
+          "skill": "taste",
+          "strong": "Specific, confident critique of a real choice (the hook, a cut, the music). Not flattery, not \"it's great.\""
+        },
+        {
+          "id": "q2",
+          "prompt": "You get 3 hours of raw footage and a brief for a 20-minute YouTube video. Walk us through your first two hours of work.",
+          "maxWords": 150,
+          "tests": [
+            "excellence"
+          ],
+          "skill": "process",
+          "strong": "A system: ingest, organize, selects or stringout, structure before cutting. Juniors start cutting immediately."
+        },
+        {
+          "id": "q3",
+          "prompt": "A client says the edit \"doesn't feel right\" but can't say why. What do you do, step by step?",
+          "maxWords": 150,
+          "tests": [
+            "client",
+            "ownership"
+          ],
+          "strong": "Asks diagnostic questions, offers two options, owns the fix. Doesn't blame the client or the brief."
+        },
+        {
+          "id": "q4",
+          "prompt": "Tell us about a time a round of revisions frustrated you. What happened and what did you do?",
+          "maxWords": 150,
+          "tests": [
+            "ownership",
+            "client"
+          ],
+          "strong": "Honest about the frustration, then describes what they changed in their own process. Red flag: the story is about how the client was wrong."
+        },
+        {
+          "id": "q5",
+          "prompt": "Describe a time you pushed an edit somewhere safer would have been easier, and it paid off. What was the risk?",
+          "maxWords": 150,
+          "tests": [
+            "bravery"
+          ],
+          "strong": "A real creative risk with a real reason. Red flag: can't think of one, or the \"risk\" was a trendy transition."
+        },
+        {
+          "id": "q6",
+          "prompt": "Look at our Instagram and one of our client accounts. In three sentences, describe our editing style and one thing you'd bring to it.",
+          "links": [
+            {
+              "label": "Peak Exposure Media",
+              "url": "https://www.instagram.com/peakexposuremedia/"
+            },
+            {
+              "label": "Paragon Custom Construction",
+              "url": "https://www.instagram.com/paragon_custom_construction"
+            }
+          ],
+          "maxWords": 150,
+          "tests": [
+            "excellence",
+            "client"
+          ],
+          "skill": "taste",
+          "strong": "Names concrete traits (cinematic, clean type, restrained pacing) and a contribution that fits rather than fights the style."
+        }
       ]
     },
     "test": {
@@ -93,25 +358,62 @@
       "blurb": "A real brief, real footage, 4–6 hours of work over 72 hours. Unpaid, tightly scoped, and the single most important part of the process.",
       "footageUrl": "https://drive.google.com/drive/folders/1fRsMBGoI4iPZ8b-rEHgeKz-fjLv_0hBs?usp=sharing",
       "packageNotes": [
-        "Raw footage: showroom b-roll and talking-head takes of Brandon Jensen, shot in log",
-        "Degular font files for captions",
-        "Paragon logo files",
-        "Two licensed music tracks (or source your own royalty-free track)",
-        "One finished PEM edit from a different project as a style reference"
+        "Raw footage: showroom b-roll and talking-head takes of Brandon Jensen",
+        "That's it on purpose. No reference edit, no music, no templates — we want to see what you come up with, not a copy of ours"
       ],
       "brief": [
-        { "h": "Client", "p": "Paragon Custom Construction — a high-end builder in Utah. This footage is from their build-out of a showroom for Schumacher, a luxury fabric and wallcovering house. Two premium brands are on screen at once: the builder and the design firm." },
-        { "h": "Audience", "p": "Affluent homeowners, architects and interior designers who hire builders at this level. They are visually literate and bored by generic content." },
-        { "h": "Deliverable", "p": "One Instagram Reel, vertical 9:16, 1080×1920, 30–60 seconds, H.264." },
-        { "h": "The feel", "p": "Elegant and high-end with a hint of social trend. Think a luxury brand that understands Instagram, not a TikTok editor doing luxury. Restrained pacing, clean motion, no stock SFX, no meme fonts, no trendy transitions for their own sake. It still has to work as social content: a hook in the first two seconds and something that re-earns attention every few seconds." },
-        { "h": "Brandon's talking video must be in the cut", "p": "Pick the single best take or mix takes together — your call. Cut him for clarity and pace; do not use every word." },
-        { "h": "Color", "p": "The footage is log. Correct and grade it yourself. We want to see your eye, not a stock LUT." },
-        { "h": "Captions", "p": "Burned-in, every spoken word, set in Degular. Typography should look designed, not defaulted." },
-        { "h": "Cover frame", "p": "One strong cover image for the Reel as a PNG, 1080×1920. It should work as a still on the grid and be on-brand for both Paragon and Schumacher." },
-        { "h": "Also deliver", "p": "The Premiere Pro project file (zipped, with media relinked to the folder structure you received), and your start and finish times — track them from the moment you open the footage to the final export." },
-        { "h": "Loom", "p": "2–3 minutes walking through your choices: the hook, the take selection, the grade, and anything you'd do differently with more time." },
-        { "h": "File naming", "p": "LastName_Schumacher_v1.mp4 · LastName_Schumacher_Cover.png · LastName_Schumacher_Project.zip" },
-        { "h": "Deadline", "p": "72 hours from when you unlock this page. Questions about the brief are welcome — there's a field for them below." }
+        {
+          "h": "Client",
+          "p": "Paragon Custom Construction — a high-end builder in Utah. This footage is from their build-out of a showroom for Schumacher, a luxury fabric and wallcovering house. Two premium brands are on screen at once: the builder and the design firm."
+        },
+        {
+          "h": "Audience",
+          "p": "Affluent homeowners, architects and interior designers who hire builders at this level. They are visually literate and bored by generic content."
+        },
+        {
+          "h": "Deliverable",
+          "p": "One Instagram Reel, vertical 9:16, 1080×1920, 30–60 seconds, H.264."
+        },
+        {
+          "h": "The feel",
+          "p": "Elegant and high-end with a hint of social trend. Think a luxury brand that understands Instagram, not a TikTok editor doing luxury. Restrained pacing, clean motion, no stock SFX, no meme fonts, no trendy transitions for their own sake. It still has to work as social content: a hook in the first two seconds and something that re-earns attention every few seconds."
+        },
+        {
+          "h": "Brandon's talking video must be in the cut",
+          "p": "Pick the single best take or mix takes together — your call. Cut him for clarity and pace; do not use every word."
+        },
+        {
+          "h": "Color",
+          "p": "Color correct and polish the footage so it looks premium and consistent across shots. The footage is not log. LUTs are fine; we're looking at your eye for skin tones, matching and overall finish."
+        },
+        {
+          "h": "Captions",
+          "p": "Burned-in, every spoken word, set in Degular. It's available in Premiere Pro through Adobe Fonts (Graphics panel → font menu → search “Degular” and activate); if you don't see it, it's free to activate at fonts.adobe.com with your Creative Cloud login. Typography should look designed, not defaulted."
+        },
+        {
+          "h": "Music",
+          "p": "Source your own track. Royalty-free or licensed, your choice — the selection is part of the test."
+        },
+        {
+          "h": "Cover frame",
+          "p": "One strong cover image for the Reel as a PNG, 1080×1920. It should work as a still on the grid and be on-brand for both Paragon and Schumacher."
+        },
+        {
+          "h": "Also deliver",
+          "p": "The Premiere Pro project file (zipped, with media relinked to the folder structure you received), and your start and finish times — track them from the moment you open the footage to the final export."
+        },
+        {
+          "h": "Walkthrough (optional)",
+          "p": "If you'd like, record a 2–3 minute Loom walking through your choices: the hook, the take selection, the color, anything you'd do differently with more time. It's optional, but it's the fastest way for us to understand how you think. Loom is free at loom.com — install the Chrome extension or desktop app, hit record with your screen and mic on, play through your edit while you talk, stop, and paste the share link below."
+        },
+        {
+          "h": "File naming",
+          "p": "LastName_Schumacher_v1.mp4 · LastName_Schumacher_Cover.png · LastName_Schumacher_Project.zip"
+        },
+        {
+          "h": "Deadline",
+          "p": "72 hours from when you unlock this page. Questions about the brief are welcome — there's a field for them below."
+        }
       ],
       "rules": [
         "The footage belongs to a real client. It may not be posted, used in a reel, or shared.",
@@ -119,15 +421,70 @@
         "A late submission is still scored, but noted."
       ],
       "deliverables": [
-        { "id": "edit_url", "label": "Link to your edit (Drive, Dropbox, Frame.io or WeTransfer)", "type": "url", "required": true },
-        { "id": "cover_url", "label": "Link to your cover frame PNG", "type": "url", "required": true },
-        { "id": "project_url", "label": "Link to your zipped Premiere project", "type": "url", "required": true },
-        { "id": "loom_url", "label": "Loom link", "type": "url", "required": true },
-        { "id": "started_at", "label": "Start time (when you first opened the footage)", "type": "datetime", "required": true },
-        { "id": "finished_at", "label": "Finish time (final export)", "type": "datetime", "required": true },
-        { "id": "hours", "label": "Total hours of actual work", "type": "number", "required": true, "min": 0, "max": 100, "step": 0.5 },
-        { "id": "notes", "label": "Anything you want us to know about your choices", "type": "textarea", "required": false, "maxWords": 200 },
-        { "id": "questions", "label": "Questions you had about the brief (and what you assumed)", "type": "textarea", "required": false, "maxWords": 200 }
+        {
+          "id": "edit_url",
+          "label": "Link to your edit (Drive, Dropbox, Frame.io or WeTransfer)",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "cover_url",
+          "label": "Link to your cover frame PNG",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "project_url",
+          "label": "Link to your zipped Premiere project",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "loom_url",
+          "label": "Loom walkthrough link (optional)",
+          "type": "url",
+          "required": false,
+          "help": "Optional. Free at loom.com — record your screen and mic while you play through the edit, then paste the share link.",
+          "helpLink": {
+            "label": "Open Loom",
+            "url": "https://www.loom.com"
+          }
+        },
+        {
+          "id": "started_at",
+          "label": "Start time (when you first opened the footage)",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "id": "finished_at",
+          "label": "Finish time (final export)",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "id": "hours",
+          "label": "Total hours of actual work",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100,
+          "step": 0.5
+        },
+        {
+          "id": "notes",
+          "label": "Anything you want us to know about your choices",
+          "type": "textarea",
+          "required": false,
+          "maxWords": 200
+        },
+        {
+          "id": "questions",
+          "label": "Questions you had about the brief (and what you assumed)",
+          "type": "textarea",
+          "required": false,
+          "maxWords": 200
+        }
       ]
     }
   },
@@ -135,23 +492,112 @@
     "skill": {
       "floor": 3.5,
       "criteria": [
-        { "id": "hook", "name": "Hook and retention", "weight": 2, "anchors": { "1": "First 2 seconds are slow or generic; no pattern breaks", "3": "Clear hook; pacing holds through the middle", "5": "Hook lands instantly; every 5–7 seconds something re-earns attention" } },
-        { "id": "pacing", "name": "Pacing and rhythm", "weight": 2, "anchors": { "1": "Cuts feel random or metronomic; no breathing room", "3": "Cuts follow the music and the story", "5": "Edit has a felt rhythm; pauses are deliberate; it breathes" } },
-        { "id": "polish", "name": "Polish", "weight": 2, "anchors": { "1": "Audio uneven, color inconsistent, type sloppy", "3": "Clean mix, matched color, readable type", "5": "Broadcast-level mix, graded, typography that looks designed" } },
-        { "id": "color", "name": "Color and log grading", "weight": 1, "anchors": { "1": "Stock LUT slapped on; skin tones off; shots don't match", "3": "Clean correction, matched shots, natural skin", "5": "A deliberate grade that suits both brands; could pass for a colorist's work" } },
-        { "id": "motion", "name": "Motion graphics and cover frame", "weight": 1, "anchors": { "1": "Default presets, off-brand fonts, cover is a screengrab", "3": "Clean on-brand type; cover frame is composed", "5": "Custom templated motion; cover frame could run as an ad" } },
-        { "id": "brief", "name": "Brief adherence", "weight": 1, "floor": 3, "anchors": { "1": "Ignored length, tone or deliverable spec", "3": "Hit every spec", "5": "Hit every spec and made one smart call the brief didn't ask for" } },
-        { "id": "organization", "name": "Organization and speed", "weight": 1, "anchors": { "1": "Project file is a mess; hours implausible", "3": "Labeled bins, tidy timeline; hours in the 4–6 range", "5": "Project file others could work from; efficient hours, better result" } },
-        { "id": "range", "name": "Range", "weight": 1, "anchors": { "1": "Only one lane in the portfolio", "3": "Credible short-form plus one other format", "5": "Senior-level across short-form, long-form and product" } }
+        {
+          "id": "hook",
+          "name": "Hook and retention",
+          "weight": 2,
+          "anchors": {
+            "1": "First 2 seconds are slow or generic; no pattern breaks",
+            "3": "Clear hook; pacing holds through the middle",
+            "5": "Hook lands instantly; every 5–7 seconds something re-earns attention"
+          }
+        },
+        {
+          "id": "pacing",
+          "name": "Pacing and rhythm",
+          "weight": 2,
+          "anchors": {
+            "1": "Cuts feel random or metronomic; no breathing room",
+            "3": "Cuts follow the music and the story",
+            "5": "Edit has a felt rhythm; pauses are deliberate; it breathes"
+          }
+        },
+        {
+          "id": "polish",
+          "name": "Polish",
+          "weight": 2,
+          "anchors": {
+            "1": "Audio uneven, color inconsistent, type sloppy",
+            "3": "Clean mix, matched color, readable type",
+            "5": "Broadcast-level mix, graded, typography that looks designed"
+          }
+        },
+        {
+          "id": "color",
+          "name": "Color and finish",
+          "weight": 1,
+          "anchors": {
+            "1": "Uncorrected or mismatched shots; skin tones off; a LUT dropped on with no adjustment",
+            "3": "Clean correction, matched shots, natural skin tones",
+            "5": "A deliberate, consistent look that suits both brands; could pass for a colorist's work"
+          }
+        },
+        {
+          "id": "motion",
+          "name": "Motion graphics and cover frame",
+          "weight": 1,
+          "anchors": {
+            "1": "Default presets, off-brand fonts, cover is a screengrab",
+            "3": "Clean on-brand type; cover frame is composed",
+            "5": "Custom templated motion; cover frame could run as an ad"
+          }
+        },
+        {
+          "id": "brief",
+          "name": "Brief adherence",
+          "weight": 1,
+          "floor": 3,
+          "anchors": {
+            "1": "Ignored length, tone or deliverable spec",
+            "3": "Hit every spec",
+            "5": "Hit every spec and made one smart call the brief didn't ask for"
+          }
+        },
+        {
+          "id": "organization",
+          "name": "Organization and speed",
+          "weight": 1,
+          "anchors": {
+            "1": "Project file is a mess; hours implausible",
+            "3": "Labeled bins, tidy timeline; hours in the 4–6 range",
+            "5": "Project file others could work from; efficient hours, better result"
+          }
+        },
+        {
+          "id": "range",
+          "name": "Range",
+          "weight": 1,
+          "anchors": {
+            "1": "Only one lane in the portfolio",
+            "3": "Credible short-form plus one other format",
+            "5": "Senior-level across short-form, long-form and product"
+          }
+        }
       ]
     },
     "values": {
       "floor": 3,
       "anchors": {
-        "bravery": { "1": "Edit is competent but forgettable; critique is polite; can't name a creative risk", "3": "Makes one distinct choice and can defend it", "5": "The edit has a point of view; critique is sharp and specific; a real risk with a real reason" },
-        "excellence": { "1": "Shortcuts visible: presets, unmixed audio, messy project, missed naming spec", "3": "Clean work, specs met, hours plausible", "5": "Every detail handled; project file reusable; chose the harder-but-better option and said so" },
-        "client": { "1": "Talks only about the edit; client is an obstacle; describes style but not the client", "3": "Mentions the client's goal; handles pushback with questions, not defensiveness", "5": "Frames every choice by what it does for the client's audience; would calm an actual client" },
-        "ownership": { "1": "Blames client, brief or footage; no questions asked; late without notice", "3": "Owns the fix; hits the deadline; asks at least one clarifying question", "5": "Treats the brief like their own project; flags a problem and solves it; explains trade-offs like a partner" }
+        "bravery": {
+          "1": "Edit is competent but forgettable; critique is polite; can't name a creative risk",
+          "3": "Makes one distinct choice and can defend it",
+          "5": "The edit has a point of view; critique is sharp and specific; a real risk with a real reason"
+        },
+        "excellence": {
+          "1": "Shortcuts visible: presets, unmixed audio, messy project, missed naming spec",
+          "3": "Clean work, specs met, hours plausible",
+          "5": "Every detail handled; project file reusable; chose the harder-but-better option and said so"
+        },
+        "client": {
+          "1": "Talks only about the edit; client is an obstacle; describes style but not the client",
+          "3": "Mentions the client's goal; handles pushback with questions, not defensiveness",
+          "5": "Frames every choice by what it does for the client's audience; would calm an actual client"
+        },
+        "ownership": {
+          "1": "Blames client, brief or footage; no questions asked; late without notice",
+          "3": "Owns the fix; hits the deadline; asks at least one clarifying question",
+          "5": "Treats the brief like their own project; flags a problem and solves it; explains trade-offs like a partner"
+        }
       }
     },
     "decision": {
