@@ -3,10 +3,10 @@
   "title": "Social Media Specialist",
   "status": "open",
   "location": "Remote — North, Central or South America",
-  "type": "Full-time",
+  "type": "Part-time",
   "summary": "Own strategy, content calendars, captions, community and growth for a roster of premium home building, design and lifestyle brands.",
   "intro": [
-    "Peak Exposure Media is a video-first content agency in Utah. We make cinematic, polished social content for premium brands in home building, design and lifestyle, and we act as the outsourced marketing department for most of our clients. We're hiring a full-time Social Media Specialist to own the accounts end to end: strategy, calendars, captions, scheduling, community management, monthly reporting and, above all, growth.",
+    "Peak Exposure Media is a video-first content agency in Utah. We make cinematic, polished social content for premium brands in home building, design and lifestyle, and we act as the outsourced marketing department for most of our clients. We're hiring a part-time Social Media Specialist (about 20 hours a week to start, with room to grow) to own the accounts end to end: strategy, calendars, captions, scheduling, community management, monthly reporting and, above all, growth.",
     "You'll work alongside our videographers and editors. They make the footage look incredible; you make sure it reaches the right people, says the right thing and turns into followers, leads and results the client can feel.",
     "We hire for four things: creative bravery, excellence over easy, client obsession and an ownership mentality. If that sounds like how you already work, you'll like it here."
   ],
@@ -224,7 +224,7 @@
         },
         {
           "id": "salary",
-          "label": "Monthly salary expectation",
+          "label": "Monthly pay expectation for about 20 hours a week",
           "type": "currency",
           "required": true,
           "currencies": [
@@ -256,16 +256,17 @@
           "type": "select",
           "required": true,
           "options": [
-            "40+",
-            "30–40",
-            "20–30",
-            "Under 20"
+            "20+",
+            "15–20",
+            "10–15",
+            "Under 10"
           ],
           "knockout": {
             "in": [
-              "Under 20"
+              "10–15",
+              "Under 10"
             ],
-            "reason": "Under 20 hours per week"
+            "reason": "Under 15 hours per week"
           }
         },
         {
