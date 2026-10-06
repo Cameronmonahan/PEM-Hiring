@@ -5,7 +5,7 @@ automatic knockouts and scoring, and a private dashboard — one config file per
 role. Runs on Cloudflare Pages (static front end + Functions + D1). Free at this
 scale, and a fork + one brand file replicates it for a client.
 
-**Live:** `https://careers.peakexposuremedia.com` · dashboard at `/admin/`
+**Live:** `https://careers.peakexposuremedia.com` (Cloudflare project: `pem-hiring.pages.dev`) · dashboard at `/admin/`
 
 ## How it works
 
