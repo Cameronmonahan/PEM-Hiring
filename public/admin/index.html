@@ -194,6 +194,7 @@
       </div>
       ${c.auto_flags?.length ? `<div class="form-error" style="margin-top:12px">Auto-rejected: ${esc(c.auto_flags.join("; "))}</div>` : ""}
       ${app._addedManually ? `<p style="margin-top:10px"><span class="pill">Added manually — skipped the application</span></p>` : ""}
+      <div class="callout" style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap"><span style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700">Personal link</span><code style="flex:1;min-width:240px;font-size:13px;word-break:break-all;color:var(--white)">${esc(link)}</code><button class="btn sm" id="copyC2">Copy</button></div>
       <div class="totals">
         <div class="tot"><div class="v ${scClass(sc.written.score, 3)}">${fmt(sc.written.score)}</div><small>Written (AI)</small></div>
         <div class="tot"><div class="v ${scClass(sc.skill.score)}">${fmt(sc.skill.score)}</div><small>Skill · ${sc.skill.filled}/${sc.skill.total}</small></div>
@@ -263,7 +264,7 @@
       else toast(r.email?.ok ? "Moved and emailed" : r.email?.error ? "Moved; email failed: " + r.email.error : "Moved");
       await loadList(); await select(c.id);
     });
-    $("#copyC").onclick = () => { navigator.clipboard.writeText(link); toast("Candidate link copied"); };
+    $("#copyC").onclick = $("#copyC2").onclick = () => { navigator.clipboard.writeText(link); toast("Candidate link copied"); };
     if ($("#rescore")) $("#rescore").onclick = async () => { toast("Scoring…"); try { await api(`/admin/candidates/${c.id}/rescore`, { method: "POST" }); await loadList(); await select(c.id); toast("AI scores updated"); } catch (e) { toast(e.message); } };
     $("#del").onclick = async () => { if (!confirm(`Delete ${c.name} permanently?`)) return; await api(`/admin/candidates/${c.id}`, { method: "DELETE" }); selected = null; location.hash = ""; await loadList(); $("#detail").innerHTML = `<p class="empty">Select a candidate.</p>`; };
     $("#addNote").onclick = async () => { const text = $("#noteText").value.trim(); if (!text) return; await api(`/admin/candidates/${c.id}/notes`, { method: "POST", body: { text } }); await select(c.id); d.querySelector('[data-tab="notes"]').click(); };
