@@ -8,7 +8,7 @@ pages_build_output_dir = "public"
 [[d1_databases]]
 binding = "DB"
 database_name = "pem-hiring"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "24a6a308-05c7-4db1-9c6c-6ac38ae5e035"
 
 # Secrets (set in Cloudflare Pages → Settings → Variables and Secrets, or
 # `npx wrangler pages secret put NAME`):
