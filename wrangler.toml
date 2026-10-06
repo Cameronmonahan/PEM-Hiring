@@ -1,0 +1,19 @@
+name = "pem-hiring"
+compatibility_date = "2025-09-01"
+pages_build_output_dir = "public"
+
+# Create the database once:
+#   npx wrangler d1 create pem-hiring
+# then paste the database_id it prints below.
+[[d1_databases]]
+binding = "DB"
+database_name = "pem-hiring"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# Secrets (set in Cloudflare Pages → Settings → Variables and Secrets, or
+# `npx wrangler pages secret put NAME`):
+#   ADMIN_PASSWORD     required — dashboard login
+#   SESSION_SECRET     required — any long random string
+#   ANTHROPIC_API_KEY  optional — enables AI scoring of written answers
+#   RESEND_API_KEY     optional — enables automatic candidate emails
+#   NOTIFY_EMAIL       optional — where new-submission alerts go

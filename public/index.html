@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Careers — Peak Exposure Media</title>
+<meta name="description" content="Open roles at Peak Exposure Media.">
+<link rel="icon" href="/assets/pem-icon-gold.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="scan-bg"></div>
+<div class="app">
+  <header class="app-header"><a href="/"><img class="header-logo" data-logo src="/assets/pem-logo-gold.png" alt="Peak Exposure Media"></a><span class="pill">Careers</span></header>
+  <main id="main" class="card"><div class="spinner"></div></main>
+</div>
+<footer class="app-footer"><img class="footer-icon" data-icon src="/assets/pem-icon-gold.png" alt=""><span data-company>Peak Exposure Media</span></footer>
+<script src="/shared.js"></script>
+<script>
+(async () => {
+  const { $, esc, applyBrand, api, renderField, wireFields, collect, showErrors, clientValidate } = PEM;
+  const main = $("#main");
+  const params = new URLSearchParams(location.search);
+  const slug = params.get("role");
+
+  try {
+    if (!slug) {
+      const { brand, roles } = await api("/roles");
+      applyBrand(brand);
+      document.title = `Careers — ${brand.company}`;
+      main.innerHTML = `
+        <p class="eyebrow">Open roles</p>
+        <h1>Work with ${esc(brand.shortName || brand.company)}</h1>
+        <p class="lead">${esc(brand.tagline || "")}</p>
+        <div class="steps">${roles.length ? roles.map((r) => `
+          <a class="step" href="/?role=${esc(r.slug)}" style="text-decoration:none;color:inherit">
+            <div class="n">→</div><div><b>${esc(r.title)}</b><small>${esc(r.type)} · ${esc(r.location)}<br>${esc(r.summary)}</small></div>
+          </a>`).join("") : `<p>No open roles right now. Check back soon.</p>`}</div>`;
+      return;
+    }
+
+    const { brand, role } = await api(`/roles/${encodeURIComponent(slug)}`);
+    applyBrand(brand);
+    document.title = `${role.title} — ${brand.company}`;
+    const app = role.stages.application;
+    const stages = [role.stages.application, role.stages.assessment, role.stages.test];
+
+    main.innerHTML = `
+      <p class="eyebrow">${esc(role.type)} · ${esc(role.location)}</p>
+      <h1>${esc(role.title)}</h1>
+      <div class="meta"><span>${esc(brand.company)}</span><span>Apply below</span></div>
+      ${role.intro.map((p) => `<p class="lead">${esc(p)}</p>`).join("")}
+      <div class="values">${role.values.map((v) => `<div class="value"><b>${esc(v.name)}</b><small>${esc(v.desc)}</small></div>`).join("")}</div>
+      <hr>
+      <h2>How it works</h2>
+      <p>${esc(role.processNote)}</p>
+      <div class="steps">${stages.map((s, i) => `<div class="step ${i === 0 ? "active" : ""}"><div class="n">${i + 1}</div><div><b>${esc(s.title)}</b><small>${esc(s.blurb)}</small></div></div>`).join("")}</div>
+      <hr>
+      <h2>${esc(app.title)}</h2>
+      <form id="apply" novalidate>
+        ${app.fields.map(renderField).join("")}
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off">
+        <div class="form-error" id="formError" hidden></div>
+        <div class="actions"><button class="btn" type="submit" id="submitBtn">Submit application</button><span style="font-size:12.5px;color:var(--muted-2)">We reply within 24 hours.</span></div>
+      </form>`;
+    const form = $("#apply");
+    wireFields(form, app.fields);
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const answers = collect(form, app.fields);
+      const errs = clientValidate(app.fields, answers);
+      $("#formError").hidden = true;
+      if (Object.keys(errs).length) { showErrors(form, errs); return; }
+      const btn = $("#submitBtn"); btn.disabled = true; btn.textContent = "Submitting…";
+      try {
+        const res = await api(`/apply/${encodeURIComponent(role.slug)}`, { method: "POST", body: { answers, website: form.website.value } });
+        if (res.token && res.status === "assessment") { location.href = `/c/?t=${encodeURIComponent(res.token)}&new=1`; return; }
+        main.innerHTML = res.duplicate
+          ? `<div class="done-mark">✓</div><h1>You've already applied</h1><p class="lead">We have an application from this email for this role. Check your inbox for your personal link, or email <a href="mailto:${esc(brand.fromEmail)}">${esc(brand.fromEmail)}</a>.</p>`
+          : `<div class="done-mark">✓</div><h1>Application received</h1><p class="lead">Thanks, ${esc(answers.name.split(" ")[0])}. We review every application personally and will reply to ${esc(answers.email)} within 24 hours.</p>`;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (err) {
+        btn.disabled = false; btn.textContent = "Submit application";
+        if (err.data?.errors) showErrors(form, err.data.errors);
+        $("#formError").textContent = err.message; $("#formError").hidden = false;
+      }
+    });
+  } catch (err) {
+    main.innerHTML = `<h1>Hmm.</h1><p class="lead">${esc(err.message)}</p><a class="btn ghost" href="/">All roles</a>`;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Your application — Peak Exposure Media</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/pem-icon-gold.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<div class="scan-bg"></div>
+<div class="app">
+  <header class="app-header"><img class="header-logo" data-logo src="/assets/pem-logo-gold.png" alt="Peak Exposure Media"><span class="pill" id="rolePill">Careers</span></header>
+  <main id="main" class="card"><div class="spinner"></div></main>
+</div>
+<footer class="app-footer"><img class="footer-icon" data-icon src="/assets/pem-icon-gold.png" alt=""><span data-company>Peak Exposure Media</span></footer>
+<script src="/shared.js"></script>
+<script>
+(async () => {
+  const { $, esc, applyBrand, api, renderField, wireFields, collect, showErrors, clientValidate, wc, fmtDate } = PEM;
+  const main = $("#main");
+  const params = new URLSearchParams(location.search);
+  const t = params.get("t");
+  const isNew = params.get("new") === "1";
+  if (!t) { main.innerHTML = `<h1>Link not found</h1><p class="lead">This page needs your personal link from your application email.</p>`; return; }
+
+  let data;
+  try { data = await api(`/c/${encodeURIComponent(t)}`); }
+  catch (e) { main.innerHTML = `<h1>Link not found</h1><p class="lead">${esc(e.message)}</p>`; return; }
+  const { brand, role, candidate } = data;
+  applyBrand(brand);
+  document.title = `${role.title} — ${brand.company}`;
+  $("#rolePill").textContent = role.title;
+  const first = candidate.name.split(" ")[0];
+  const s = candidate.status;
+
+  const stageState = (i) => {
+    const order = { applied: 0, assessment: 1, assessment_done: 1.5, test: 2, test_done: 2.5, call: 3, hired: 3, rejected: -1 };
+    const pos = order[s] ?? 0;
+    if (i === 0) return "done";
+    if (i === 1) return pos > 1 ? "done" : pos === 1 ? "active" : "locked";
+    if (i === 2) return pos > 2 ? "done" : pos === 2 ? "active" : "locked";
+  };
+  const stages = [role.stages.application, role.stages.assessment, role.stages.test];
+  const progress = () => `<div class="steps">${stages.map((st, i) => { const k = stageState(i); return `<div class="step ${k}"><div class="n">${k === "done" ? "✓" : i + 1}</div><div><b>${esc(st.title)}</b><small>${esc(st.blurb)}</small></div></div>`; }).join("")}</div>`;
+
+  function showHome(extraHtml = "") {
+    let headline, body;
+    switch (s) {
+      case "applied": headline = "Application received"; body = "Your application is with us. We reply within 24 hours, and this link will update when the next step opens."; break;
+      case "assessment": headline = `Welcome, ${esc(first)}`; body = "Your application cleared our first screen. The written assessment is open — six questions, about 25 minutes. There's no timer and you can take your time, but please submit in one sitting."; break;
+      case "assessment_done": headline = "Assessment received"; body = "Thanks — your answers are in. We read every one personally and will reply within 24 hours."; break;
+      case "test": headline = "The test edit is open"; body = "This is the single most important step. Read the brief carefully; the window is 72 hours from when it was unlocked."; break;
+      case "test_done": headline = "Test edit received"; body = "Thank you. We score every submission against the same rubric and will be in touch within 24 hours."; break;
+      case "call": headline = "Let's talk"; body = "Your work cleared our bar. Check your email — we'd like to book a call."; break;
+      case "hired": headline = "Welcome to the team"; body = "Check your email for next steps."; break;
+      case "rejected": headline = "Thank you"; body = "We won't be moving forward on this role, but we appreciate the time you put in and wish you the best."; break;
+      default: headline = "Your application"; body = "";
+    }
+    main.innerHTML = `<p class="eyebrow">${esc(role.title)}</p><h1>${headline}</h1><p class="lead">${body}</p>${s === "rejected" ? "" : progress()}${extraHtml}
+      ${s === "assessment" ? `<div class="actions"><button class="btn" id="go">Start the written assessment</button></div>` : ""}
+      ${s === "test" ? `<div class="callout">Window closes <b>${esc(fmtDate(candidate.test_due_at))}</b> your local time.</div><div class="actions"><button class="btn" id="go">Open the brief</button></div>` : ""}
+      <p style="margin-top:28px;font-size:12.5px;color:var(--muted-2)">Bookmark this page — it's your personal link for every step. Questions? <a href="mailto:${esc(brand.fromEmail)}">${esc(brand.fromEmail)}</a></p>`;
+    if (s === "assessment") $("#go").onclick = showAssessment;
+    if (s === "test") $("#go").onclick = showTest;
+    window.scrollTo({ top: 0 });
+  }
+
+  function showAssessment() {
+    const a = role.stages.assessment;
+    const fields = a.questions.map((q) => ({ id: q.id, type: "textarea", required: true, maxWords: q.maxWords }));
+    main.innerHTML = `<p class="eyebrow">Step 2 of 3</p><h1>${esc(a.title)}</h1><p class="lead">${esc(a.blurb)}</p>
+      <form id="f" novalidate>
+      ${a.questions.map((q, i) => `<div class="q" data-field="${q.id}"><div class="num">QUESTION ${i + 1}</div><div class="prompt">${esc(q.prompt)}</div>
+        ${q.link ? `<div class="links"><a href="${esc(q.link)}" target="_blank" rel="noopener">${esc(q.linkLabel || "Open link")} ↗</a></div>` : ""}
+        ${q.links ? `<div class="links">${q.links.map((l) => `<a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)} ↗</a>`).join("")}</div>` : ""}
+        <div class="field" data-field="${q.id}"><textarea id="f_${q.id}" required></textarea><div class="count" data-count-for="${q.id}">0 / ${q.maxWords} words</div><div class="err"></div></div></div>`).join("")}
+      <div class="form-error" id="formError" hidden></div>
+      <div class="actions"><button class="btn" type="submit" id="submitBtn">Submit answers</button><button class="btn ghost" type="button" id="back">Back</button></div></form>`;
+    const form = $("#f"); wireFields(form, fields);
+    $("#back").onclick = showHome;
+    // Draft autosave so a refresh doesn't lose answers
+    const key = `pem_draft_${t}_assessment`;
+    try { const d = JSON.parse(localStorage.getItem(key) || "{}"); for (const [k, v] of Object.entries(d)) { const el = form.querySelector(`#f_${k}`); if (el) { el.value = v; el.dispatchEvent(new Event("input")); } } } catch {}
+    form.addEventListener("input", () => { try { localStorage.setItem(key, JSON.stringify(collect(form, fields))); } catch {} });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const answers = collect(form, fields);
+      const errs = clientValidate(fields, answers);
+      if (Object.keys(errs).length) { showErrors(form, errs); return; }
+      const btn = $("#submitBtn"); btn.disabled = true; btn.textContent = "Submitting…";
+      try {
+        await api(`/c/${encodeURIComponent(t)}/assessment`, { method: "POST", body: { answers } });
+        try { localStorage.removeItem(key); } catch {}
+        location.href = `/c/?t=${encodeURIComponent(t)}`;
+      } catch (err) {
+        btn.disabled = false; btn.textContent = "Submit answers";
+        if (err.data?.errors) showErrors(form, err.data.errors);
+        $("#formError").textContent = err.message; $("#formError").hidden = false;
+      }
+    });
+    window.scrollTo({ top: 0 });
+  }
+
+  function showTest() {
+    const te = role.stages.test;
+    main.innerHTML = `<p class="eyebrow">Step 3 of 3</p><h1>${esc(te.title)}</h1><p class="lead">${esc(te.blurb)}</p>
+      <div class="callout" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><span>Window closes <b>${esc(fmtDate(candidate.test_due_at))}</b></span><span class="timer" id="timer"></span></div>
+      <h2 style="margin-top:28px">The package</h2>
+      <p><a class="btn" href="${esc(te.footageUrl)}" target="_blank" rel="noopener">Open the footage ↗</a></p>
+      <ul class="list">${te.packageNotes.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>
+      <h2>The brief</h2>
+      <div class="brief">${te.brief.map((b) => `<div class="brief-item"><b>${esc(b.h)}</b><span>${esc(b.p)}</span></div>`).join("")}</div>
+      <h2>Ground rules</h2>
+      <ul class="list">${te.rules.map((r) => `<li>${esc(r)}</li>`).join("")}</ul>
+      <hr>
+      <h2>Submit your work</h2>
+      <p>Upload your files to Drive, Dropbox, Frame.io or WeTransfer and paste the links. Make sure sharing is set so anyone with the link can view.</p>
+      <form id="f" novalidate>${te.deliverables.map(renderField).join("")}
+      <div class="form-error" id="formError" hidden></div>
+      <div class="actions"><button class="btn" type="submit" id="submitBtn">Submit test edit</button><button class="btn ghost" type="button" id="back">Back</button></div></form>`;
+    const form = $("#f"); wireFields(form, te.deliverables);
+    $("#back").onclick = showHome;
+    const due = new Date(candidate.test_due_at).getTime();
+    const tick = () => { const ms = due - Date.now(); const el = $("#timer"); if (!el) return; if (ms <= 0) { el.textContent = "Window closed"; return; } const h = Math.floor(ms / 3600e3), m = Math.floor((ms % 3600e3) / 60e3); el.textContent = `${h}h ${String(m).padStart(2, "0")}m left`; };
+    tick(); setInterval(tick, 30e3);
+    const key = `pem_draft_${t}_test`;
+    try { const d = JSON.parse(localStorage.getItem(key) || "{}"); for (const [k, v] of Object.entries(d)) { const el = form.querySelector(`#f_${k}`); if (el && typeof v !== "object") { el.value = v; el.dispatchEvent(new Event("input")); } } } catch {}
+    form.addEventListener("input", () => { try { localStorage.setItem(key, JSON.stringify(collect(form, te.deliverables))); } catch {} });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const answers = collect(form, te.deliverables);
+      const errs = clientValidate(te.deliverables, answers);
+      if (Object.keys(errs).length) { showErrors(form, errs); return; }
+      const btn = $("#submitBtn"); btn.disabled = true; btn.textContent = "Submitting…";
+      try {
+        await api(`/c/${encodeURIComponent(t)}/test`, { method: "POST", body: { answers } });
+        try { localStorage.removeItem(key); } catch {}
+        location.href = `/c/?t=${encodeURIComponent(t)}`;
+      } catch (err) {
+        btn.disabled = false; btn.textContent = "Submit test edit";
+        if (err.data?.errors) showErrors(form, err.data.errors);
+        $("#formError").textContent = err.message; $("#formError").hidden = false;
+      }
+    });
+    window.scrollTo({ top: 0 });
+  }
+
+  showHome(isNew && s === "assessment" ? `<div class="callout" style="margin-bottom:8px">We've emailed this link to you as well. If you'd rather do the assessment later, come back any time.</div>` : "");
+})();
+</script>
+</body>
+</html>

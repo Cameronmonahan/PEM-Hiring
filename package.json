@@ -1,0 +1,11 @@
+{
+  "name": "pem-hiring",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "db:local": "wrangler d1 execute pem-hiring --local --file=schema.sql",
+    "db:remote": "wrangler d1 execute pem-hiring --remote --file=schema.sql",
+    "deploy": "wrangler pages deploy"
+  },
+  "devDependencies": { "wrangler": "^4" }
+}

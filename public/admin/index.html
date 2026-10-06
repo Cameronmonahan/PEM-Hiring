@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Hiring Dashboard — Peak Exposure Media</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/assets/pem-icon-gold.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css">
+<style>
+  .app{align-items:stretch;max-width:1240px;margin:0 auto;padding:22px 20px 60px}
+  .app-header{max-width:none}
+  .topbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+  .topbar select{font:inherit;color:var(--white);background:var(--navy);border:1px solid var(--line-strong);border-radius:9px;padding:9px 12px}
+  .topbar select option{color:#111}
+  .grid{display:grid;grid-template-columns:380px 1fr;gap:18px;align-items:start}
+  @media (max-width:900px){.grid{grid-template-columns:1fr}}
+  .panel{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));border:1px solid var(--line);border-radius:var(--r-lg);padding:18px}
+  .pipeline{display:grid;gap:14px}
+  .col-title{display:flex;justify-content:space-between;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin:6px 0 6px}
+  .crow{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;transition:border-color .15s,background .15s}
+  .crow:hover{border-color:var(--gold)}
+  .crow.sel{border-color:var(--gold);background:var(--gold-dim)}
+  .crow b{display:block;font-size:14px}
+  .crow small{color:var(--muted-2);font-size:12px}
+  .scores{display:flex;gap:6px}
+  .sc{min-width:38px;text-align:center;font-family:var(--font-display);font-size:18px;letter-spacing:.04em;padding:3px 6px;border-radius:8px;border:1px solid var(--line)}
+  .sc.good{color:var(--ok);border-color:rgba(127,200,169,.4)}
+  .sc.mid{color:var(--warn);border-color:rgba(227,181,103,.4)}
+  .sc.bad{color:var(--bad);border-color:rgba(224,122,122,.4)}
+  .sc.na{color:var(--muted-2)}
+  .rec{font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:999px}
+  .rec.strong{background:rgba(127,200,169,.18);color:var(--ok)}
+  .rec.advance{background:var(--gold-dim);color:var(--gold-light)}
+  .rec.no{background:rgba(224,122,122,.14);color:var(--bad)}
+  .rec.incomplete{background:rgba(255,255,255,.06);color:var(--muted-2)}
+  .detail h1{font-size:40px}
+  .kv{display:grid;grid-template-columns:170px 1fr;gap:6px 14px;font-size:14px;margin:10px 0}
+  .kv div:nth-child(odd){color:var(--muted-2)}
+  .kv a{word-break:break-all}
+  .ans{margin:14px 0;padding:14px;border:1px solid var(--line);border-radius:12px}
+  .ans .qp{font-size:12.5px;color:var(--gold);letter-spacing:.04em;font-weight:700;margin-bottom:6px}
+  .ans .txt{white-space:pre-wrap;font-size:14px;color:#E2E5EC}
+  .ans .ai{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);font-size:13px;color:var(--muted)}
+  .ai-badge{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--navy-deep);background:var(--gold);border-radius:6px;padding:2px 7px;margin-right:8px}
+  .rubric{display:grid;gap:10px}
+  .crit{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px 14px;border:1px solid var(--line);border-radius:12px}
+  .crit b{font-size:14px}
+  .crit small{display:block;color:var(--muted-2);font-size:12px;margin-top:3px}
+  .crit .hint{color:var(--gold-light);font-size:12px}
+  .seg{display:flex;gap:4px}
+  .seg button{font:inherit;font-weight:700;width:36px;height:36px;border-radius:8px;border:1px solid var(--line-strong);background:rgba(255,255,255,.03);color:var(--muted);cursor:pointer}
+  .seg button.on{background:var(--gold);color:var(--navy-deep);border-color:var(--gold)}
+  .seg button.ai{border-color:var(--gold);color:var(--gold-light)}
+  .totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin:16px 0}
+  .tot{padding:14px;border:1px solid var(--line);border-radius:12px;text-align:center}
+  .tot .v{font-family:var(--font-display);font-size:34px;letter-spacing:.04em}
+  .tot small{color:var(--muted-2);font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 10px;border-bottom:1px solid var(--line)}
+  .tabs button{font:inherit;font-weight:600;font-size:13px;background:none;border:0;color:var(--muted);padding:10px 12px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px}
+  .tabs button.on{color:var(--gold-light);border-bottom-color:var(--gold)}
+  .tab{display:none}.tab.on{display:block}
+  .note{padding:10px 12px;border-left:2px solid var(--gold);margin:8px 0;font-size:13.5px;color:#D8DCE6}
+  .note small{display:block;color:var(--muted-2);font-size:11px}
+  .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy);border:1px solid var(--gold);color:var(--white);padding:12px 18px;border-radius:12px;font-size:14px;z-index:9;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+  .flag{color:var(--bad);font-size:13px}
+  .login{max-width:420px;margin:60px auto}
+  textarea.notebox{width:100%;font:inherit;font-size:14px;color:var(--white);background:rgba(255,255,255,.04);border:1px solid var(--line-strong);border-radius:10px;padding:10px 12px;min-height:70px}
+  .empty{color:var(--muted-2);font-size:13px;padding:10px 0}
+</style>
+</head>
+<body>
+<div class="scan-bg"></div>
+<div class="app">
+  <header class="app-header"><img class="header-logo" src="/assets/pem-logo-gold.png" alt="Peak Exposure Media"><span class="pill">Hiring dashboard</span></header>
+  <div id="root"><div class="spinner"></div></div>
+</div>
+<script src="/shared.js"></script>
+<script>
+(async () => {
+  const { $, esc, api, fmtDate, wc } = PEM;
+  const root = $("#root");
+  const toast = (m) => { const t = document.createElement("div"); t.className = "toast"; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 2600); };
+  const STATUS_LABEL = { applied: "Applied", assessment: "Assessment open", assessment_done: "Assessment in", test: "Test edit open", test_done: "Test edit in", call: "Call", hired: "Hired", rejected: "Rejected" };
+  const COLS = [["applied", "New applications"], ["assessment", "Assessment open"], ["assessment_done", "Assessment submitted"], ["test", "Test edit open"], ["test_done", "Test edit submitted — score"], ["call", "Call"], ["hired", "Hired"], ["rejected", "Rejected"]];
+
+  let me, roles, brand, roleSlug, list = [], selected = null;
+
+  async function boot() {
+    try { me = await api("/admin/me"); } catch { return showLogin(); }
+    const r = await api("/admin/roles"); roles = r.roles; brand = r.brand;
+    roleSlug = localStorage.getItem("pem_admin_role") || roles[0]?.slug;
+    await loadList();
+    const hash = new URLSearchParams(location.hash.slice(1)); if (hash.get("c")) await select(hash.get("c"));
+  }
+
+  function showLogin() {
+    root.innerHTML = `<div class="card login"><p class="eyebrow">Admin</p><h1>Sign in</h1><form id="lf"><div class="field"><label>Password</label><input type="password" id="pw" autofocus></div><div class="form-error" id="le" hidden></div><div class="actions"><button class="btn" type="submit">Sign in</button></div></form></div>`;
+    $("#lf").onsubmit = async (e) => { e.preventDefault(); try { await api("/admin/login", { method: "POST", body: { password: $("#pw").value } }); boot(); } catch (err) { $("#le").textContent = err.message; $("#le").hidden = false; } };
+  }
+
+  async function loadList() { const d = await api(`/admin/candidates?role=${encodeURIComponent(roleSlug)}`); list = d.candidates; render(); }
+
+  const scClass = (v, floor = 3.5) => v == null ? "na" : v >= 4 ? "good" : v >= floor ? "mid" : "bad";
+  const fmt = (v) => v == null ? "–" : Number(v).toFixed(1);
+
+  function render() {
+    const role = roles.find((r) => r.slug === roleSlug);
+    root.innerHTML = `
+      <div class="topbar">
+        <select id="roleSel">${roles.map((r) => `<option value="${r.slug}" ${r.slug === roleSlug ? "selected" : ""}>${esc(r.title)} (${r.status})</option>`).join("")}</select>
+        <a class="btn ghost sm" href="/?role=${roleSlug}" target="_blank">Public page ↗</a>
+        <button class="btn ghost sm" id="copyLink">Copy apply link</button>
+        <span style="flex:1"></span>
+        <span class="pill">${me.ai ? "AI scoring on" : "AI scoring off"}</span><span class="pill">${me.email ? "Emails on" : "Emails off — copy links manually"}</span>
+        <button class="btn ghost sm" id="logout">Sign out</button>
+      </div>
+      <div class="grid"><div class="panel pipeline" id="pipe"></div><div class="panel detail" id="detail"><p class="empty">Select a candidate.</p></div></div>`;
+    $("#roleSel").onchange = (e) => { roleSlug = e.target.value; localStorage.setItem("pem_admin_role", roleSlug); selected = null; loadList(); };
+    $("#copyLink").onclick = () => { navigator.clipboard.writeText(`${me.careersUrl}/?role=${roleSlug}`); toast("Apply link copied"); };
+    $("#logout").onclick = async () => { await api("/admin/logout", { method: "POST" }); location.reload(); };
+    renderPipeline();
+    if (selected) renderDetail();
+  }
+
+  function renderPipeline() {
+    const pipe = $("#pipe");
+    pipe.innerHTML = COLS.map(([st, label]) => {
+      const rows = list.filter((c) => c.status === st);
+      if (!rows.length && !["applied", "assessment", "test_done"].includes(st)) return "";
+      return `<div><div class="col-title"><span>${label}</span><span>${rows.length}</span></div>${rows.length ? rows.map(row).join("") : `<div class="empty">None</div>`}</div>`;
+    }).join("");
+    pipe.querySelectorAll(".crow").forEach((el) => el.onclick = () => select(el.dataset.id));
+  }
+  function row(c) {
+    const sc = c.scorecard || {};
+    return `<div class="crow ${selected?.candidate?.id === c.id ? "sel" : ""}" data-id="${c.id}"><div><b>${esc(c.name)}</b><small>${esc(c.country || "")} · ${c.years ?? "?"} yrs · ${fmtDate(c.created_at)}</small>${c.auto_flags?.length ? `<div class="flag">⚠ ${esc(c.auto_flags.join("; "))}</div>` : ""}</div>
+      <div class="scores" title="Written / Skill / Values"><span class="sc ${scClass(sc.written, 3)}">${fmt(sc.written)}</span><span class="sc ${scClass(sc.skill)}">${fmt(sc.skill)}</span><span class="sc ${scClass(sc.values, 3)}">${fmt(sc.values)}</span></div></div>`;
+  }
+
+  async function select(id) {
+    selected = await api(`/admin/candidates/${id}`);
+    location.hash = `c=${id}`;
+    renderPipeline(); renderDetail();
+  }
+
+  function renderDetail() {
+    const { candidate: c, scorecard: sc, events, link } = selected;
+    const role = roles.find((r) => r.slug === c.role_slug);
+    const app = c.application || {}, ai = c.ai_scores || {};
+    const d = $("#detail");
+    const fieldLabel = (id) => role.stages.application.fields.find((f) => f.id === id)?.label || id;
+    const salary = app.salary ? `${Number(app.salary.amount).toLocaleString()} ${app.salary.currency}/mo` : "–";
+    const due = c.test_due_at ? fmtDate(c.test_due_at) : null;
+    const late = c.test_submitted_at && c.test_due_at && c.test_submitted_at > c.test_due_at;
+
+    d.innerHTML = `
+      <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+        <div><p class="eyebrow">${esc(STATUS_LABEL[c.status] || c.status)}</p><h1>${esc(c.name)}</h1><p style="margin:4px 0 0"><a href="mailto:${esc(c.email)}">${esc(c.email)}</a> · ${esc(app.country || "")} · ${esc(app.timezone || "")}</p></div>
+        <span class="rec ${sc.recommendation}">${{ strong: "Strong — call", advance: "Advance to call", no: "Below bar", incomplete: "Scoring incomplete" }[sc.recommendation]}</span>
+      </div>
+      ${c.auto_flags?.length ? `<div class="form-error" style="margin-top:12px">Auto-rejected: ${esc(c.auto_flags.join("; "))}</div>` : ""}
+      <div class="totals">
+        <div class="tot"><div class="v ${scClass(sc.written.score, 3)}">${fmt(sc.written.score)}</div><small>Written (AI)</small></div>
+        <div class="tot"><div class="v ${scClass(sc.skill.score)}">${fmt(sc.skill.score)}</div><small>Skill · ${sc.skill.filled}/${sc.skill.total}</small></div>
+        <div class="tot"><div class="v ${scClass(sc.values.score, 3)}">${fmt(sc.values.score)}</div><small>Values · ${sc.values.filled}/${sc.values.total}</small></div>
+      </div>
+      ${sc.floors.reasons.length ? `<div class="flag">Floors: ${esc(sc.floors.reasons.join(" · "))}</div>` : ""}
+      <div class="actions" style="margin:14px 0 4px">
+        ${c.status === "applied" ? `<button class="btn sm" data-status="assessment">Unlock assessment</button>` : ""}
+        ${["assessment_done", "assessment"].includes(c.status) ? `<button class="btn sm" data-status="test">Unlock test edit (72h)</button>` : ""}
+        ${c.status === "test_done" ? `<button class="btn sm" data-status="call">Advance to call</button>` : ""}
+        ${c.status === "call" ? `<button class="btn sm" data-status="hired">Mark hired</button>` : ""}
+        ${c.status !== "rejected" ? `<button class="btn danger sm" data-status="rejected">Reject</button>` : `<button class="btn ghost sm" data-status="applied">Reopen</button>`}
+        <button class="btn ghost sm" id="copyC">Copy candidate link</button>
+        ${me.ai ? `<button class="btn ghost sm" id="rescore">Re-run AI scoring</button>` : ""}
+        <button class="btn ghost sm" id="del" style="margin-left:auto;color:var(--bad)">Delete</button>
+      </div>
+      <div class="tabs"><button class="on" data-tab="score">Score</button><button data-tab="app">Application</button><button data-tab="assess">Written answers</button><button data-tab="test">Test edit</button><button data-tab="notes">Notes & timeline</button></div>
+
+      <div class="tab on" id="tab-score">
+        ${ai.summary ? `<div class="callout"><span class="ai-badge">AI</span>${esc(ai.summary)}${ai.english ? ` <br><small style="color:var(--muted-2)">Written English ${ai.english.score}/5 — ${esc(ai.english.rationale)}</small>` : ""}</div>` : me.ai ? `<p class="empty">AI scoring runs when written answers come in.</p>` : ""}
+        <h3 style="margin-top:18px">Skill — from the test edit</h3>
+        <div class="rubric">${role.scoring.skill.criteria.map((cr) => seg("skill", cr.id, cr.name, `${cr.anchors["1"]} · ${cr.anchors["3"]} · ${cr.anchors["5"]}`, sc.skill.scores[cr.id], null, cr.weight > 1 ? `×${cr.weight}` : "", sc.skill.auto[cr.id] ? `Self-rated ${sc.skill.auto[cr.id].score}/5` : "")).join("")}</div>
+        <h3 style="margin-top:22px">Values</h3>
+        <div class="rubric">${role.values.map((v) => { const a = role.scoring.values.anchors[v.key] || {}; const aiv = ai.values?.[v.key]; return seg("values", v.key, v.name, `${a["1"]} · ${a["3"]} · ${a["5"]}`, sc.values.scores[v.key], sc.values.source[v.key] === "ai" ? aiv?.score : null, "", aiv ? `AI ${aiv.score}/5 — ${aiv.rationale}` : ""); }).join("")}</div>
+        <p style="margin-top:14px;font-size:12.5px;color:var(--muted-2)">Floors: skill ≥ ${role.scoring.skill.floor} with no criterion at 1${role.scoring.skill.criteria.filter((x) => x.floor).map((x) => `, ${x.name.toLowerCase()} ≥ ${x.floor}`).join("")}; every value ≥ ${role.scoring.values.floor}. Gold outline = AI suggestion; click to override.</p>
+      </div>
+
+      <div class="tab" id="tab-app">
+        <div class="kv">${role.stages.application.fields.filter((f) => f.type !== "textarea").map((f) => { let v = app[f.id]; if (f.type === "currency") v = salary; if (f.type === "url" && v) v = `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`; else v = esc(v ?? "–"); return `<div>${esc(f.label)}</div><div>${v}</div>`; }).join("")}</div>
+        ${role.stages.application.fields.filter((f) => f.type === "textarea").map((f) => answer(f.label, app[f.id], ai.questions?.[f.id])).join("")}
+      </div>
+
+      <div class="tab" id="tab-assess">
+        ${c.assessment ? role.stages.assessment.questions.map((q, i) => answer(`Q${i + 1} · ${q.prompt}`, c.assessment[q.id], ai.questions?.[q.id], q.strong)).join("") : `<p class="empty">Not submitted yet.</p>`}
+      </div>
+
+      <div class="tab" id="tab-test">
+        ${due ? `<div class="kv"><div>Unlocked</div><div>${fmtDate(c.test_unlocked_at)}</div><div>Due</div><div>${due}</div><div>Submitted</div><div>${c.test_submitted_at ? fmtDate(c.test_submitted_at) + (late ? ' <span class="flag">LATE</span>' : " · on time") : "–"}</div></div>` : ""}
+        ${c.test ? `<div class="kv">${role.stages.test.deliverables.filter((f) => f.type !== "textarea").map((f) => { let v = c.test[f.id]; if (f.type === "url" && v) v = `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`; else if (f.type === "datetime" && v) v = esc(fmtDate(v)); else v = esc(v ?? "–"); return `<div>${esc(f.label)}</div><div>${v}</div>`; }).join("")}</div>
+          ${role.stages.test.deliverables.filter((f) => f.type === "textarea").map((f) => answer(f.label, c.test[f.id], ai.questions?.["test_" + f.id])).join("")}` : `<p class="empty">Not submitted yet.</p>`}
+      </div>
+
+      <div class="tab" id="tab-notes">
+        <textarea class="notebox" id="noteText" placeholder="Add a note…"></textarea>
+        <div class="actions"><button class="btn sm" id="addNote">Add note</button></div>
+        <div id="notes">${(c.notes || []).slice().reverse().map((n) => `<div class="note">${esc(n.text)}<small>${fmtDate(n.at)}</small></div>`).join("")}</div>
+        <h3 style="margin-top:20px">Timeline</h3>
+        ${events.map((e) => `<div class="note" style="border-color:var(--line)"><b>${esc(e.kind)}</b> ${esc(e.detail || "")}<small>${fmtDate(e.at)}</small></div>`).join("")}
+      </div>`;
+
+    d.querySelectorAll(".tabs button").forEach((b) => b.onclick = () => { d.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("on", x === b)); d.querySelectorAll(".tab").forEach((x) => x.classList.toggle("on", x.id === "tab-" + b.dataset.tab)); });
+    d.querySelectorAll("[data-seg]").forEach((b) => b.onclick = async () => {
+      const [grp, key] = b.dataset.seg.split(":");
+      const r = await api(`/admin/candidates/${c.id}/scores`, { method: "POST", body: { [grp]: { [key]: Number(b.dataset.v) } } });
+      selected.scorecard = r.scorecard; selected.candidate.manual_scores = { ...(c.manual_scores || {}), [grp]: { ...((c.manual_scores || {})[grp] || {}), [key]: Number(b.dataset.v) } };
+      const tab = d.querySelector(".tabs button.on").dataset.tab;
+      await loadList(); renderDetail(); d.querySelector(`[data-tab="${tab}"]`).click();
+    });
+    d.querySelectorAll("[data-status]").forEach((b) => b.onclick = async () => {
+      const status = b.dataset.status;
+      let reason;
+      if (status === "rejected") { reason = prompt("Reason (kept private):", "") ; if (reason === null) return; }
+      const send = me.email ? confirm(`Move to "${STATUS_LABEL[status]}" and email the candidate?\nOK = move and email · Cancel = move without email`) : false;
+      if (!me.email && !confirm(`Move to "${STATUS_LABEL[status]}"?`)) return;
+      const r = await api(`/admin/candidates/${c.id}/status`, { method: "POST", body: { status, send, reason } });
+      if (!me.email && ["assessment", "test"].includes(status)) { navigator.clipboard.writeText(r.link).catch(() => {}); toast("Moved. Candidate link copied — email it to them."); }
+      else toast(r.email?.ok ? "Moved and emailed" : r.email?.error ? "Moved; email failed: " + r.email.error : "Moved");
+      await loadList(); await select(c.id);
+    });
+    $("#copyC").onclick = () => { navigator.clipboard.writeText(link); toast("Candidate link copied"); };
+    if ($("#rescore")) $("#rescore").onclick = async () => { toast("Scoring…"); try { await api(`/admin/candidates/${c.id}/rescore`, { method: "POST" }); await loadList(); await select(c.id); toast("AI scores updated"); } catch (e) { toast(e.message); } };
+    $("#del").onclick = async () => { if (!confirm(`Delete ${c.name} permanently?`)) return; await api(`/admin/candidates/${c.id}`, { method: "DELETE" }); selected = null; location.hash = ""; await loadList(); $("#detail").innerHTML = `<p class="empty">Select a candidate.</p>`; };
+    $("#addNote").onclick = async () => { const text = $("#noteText").value.trim(); if (!text) return; await api(`/admin/candidates/${c.id}/notes`, { method: "POST", body: { text } }); await select(c.id); d.querySelector('[data-tab="notes"]').click(); };
+  }
+
+  function seg(grp, key, name, anchors, val, aiVal, weight, hint) {
+    let b = ""; for (let i = 1; i <= 5; i++) b += `<button data-seg="${grp}:${key}" data-v="${i}" class="${val === i ? "on" : ""}${aiVal === i && val === undefined ? " ai" : ""}">${i}</button>`;
+    return `<div class="crit"><div><b>${esc(name)} <span style="color:var(--muted-2);font-weight:400">${weight}</span></b><small>${esc(anchors)}</small>${hint ? `<div class="hint">${esc(hint)}</div>` : ""}</div><div class="seg">${b}</div></div>`;
+  }
+  function answer(label, text, aiq, strong) {
+    if (!text) return "";
+    return `<div class="ans"><div class="qp">${esc(label)}</div><div class="txt">${esc(text)}</div><div style="font-size:11px;color:var(--muted-2);margin-top:6px">${wc(text)} words</div>
+      ${strong ? `<div class="ai" style="border-top:0;padding-top:4px"><span style="color:var(--gold)">Strong answer:</span> ${esc(strong)}</div>` : ""}
+      ${aiq ? `<div class="ai"><span class="ai-badge">AI ${aiq.score}/5</span>${esc(aiq.rationale)}</div>` : ""}</div>`;
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>
