@@ -4,8 +4,9 @@ import socialMediaSpecialist from "./social-media-specialist.json";
 import socialMediaIntern from "./social-media-intern.json";
 import videoEditorIntern from "./video-editor-intern.json";
 import videographyIntern from "./videography-intern.json";
+import operationsManager from "./operations-manager.json";
 
-export const roles = [seniorVideoEditor, socialMediaSpecialist, socialMediaIntern, videoEditorIntern, videographyIntern];
+export const roles = [operationsManager, seniorVideoEditor, socialMediaSpecialist, socialMediaIntern, videoEditorIntern, videographyIntern];
 
 export function getRole(slug) {
   return roles.find((r) => r.slug === slug) || null;

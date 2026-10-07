@@ -1,0 +1,662 @@
+{
+  "slug": "operations-manager",
+  "title": "Operations Manager",
+  "status": "open",
+  "location": "Remote — worldwide, with at least 4 working hours of overlap with Mountain Time (UTC-7)",
+  "type": "Full-time",
+  "summary": "Run the day-to-day of a premium video-first content agency: the team, the systems, the standards and the schedule — so the founder can live in marketing and sales.",
+  "intro": [
+    "Peak Exposure Media is a video-first content marketing agency in Utah. We make cinematic, polished social content for premium brands in home building, design and lifestyle, and we act as the outsourced marketing department for most of our clients. We're a small, fast team of videographers, editors and social media specialists, plus interns, working in Notion, Frame.io, Google Drive and Google Chat.",
+    "We're hiring a full-time Operations Manager to run the business day to day. You'll sit next to the founder in authority, not under a layer of management. He does what he does best — marketing, sales and the creative vision — and you own everything that makes it work: the team, the workflows, the client delivery schedule, hiring and onboarding, standards and accountability. You'll build the systems we don't have yet, fix the ones that are slowing us down, and learn how each person on the team works so you can set them up to succeed. You'll have real autonomy; big decisions get a conversation with the founder, everything else is yours.",
+    "Agency or production experience is ideal but not required. What is required: you've managed people before and they got better under you, you think in systems, and your standards are higher than the people around you. We hire for four things: creative bravery, excellence over easy, client obsession and an ownership mentality. If that sounds like how you already work, you'll like it here."
+  ],
+  "processNote": "Our process has three steps, all before an interview. We reply to everyone within 24 hours of each step.",
+  "values": [
+    {
+      "key": "bravery",
+      "name": "Creative Bravery",
+      "desc": "Push past \"safe\" and generic."
+    },
+    {
+      "key": "excellence",
+      "name": "Excellence Over Easy",
+      "desc": "Quality matters; don't rush or choose the easy route."
+    },
+    {
+      "key": "client",
+      "name": "Client-Obsessed",
+      "desc": "Care deeply about the client's results, not just completing deliverables."
+    },
+    {
+      "key": "ownership",
+      "name": "Ownership Mentality",
+      "desc": "Act like it's your company, not just a job."
+    }
+  ],
+  "flow": {
+    "autoAdvanceToAssessment": true,
+    "autoAdvanceToTest": false,
+    "testDeadlineHours": 96
+  },
+  "stages": {
+    "application": {
+      "title": "Application",
+      "blurb": "About 15 minutes. We'll ask about the teams you've run, the systems you've built, and one result you're proud of, with real numbers.",
+      "fields": [
+        {
+          "id": "name",
+          "label": "Full name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "country",
+          "label": "Country",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "linkedin",
+          "label": "LinkedIn profile (or CV link)",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "overlap",
+          "label": "Working hours you can reliably overlap with Mountain Time (UTC-7), Monday to Friday",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Full day — 8+ hours",
+            "6–8 hours",
+            "4–6 hours",
+            "2–4 hours",
+            "Under 2 hours"
+          ],
+          "knockout": {
+            "in": [
+              "2–4 hours",
+              "Under 2 hours"
+            ],
+            "reason": "Under 4 hours of overlap with Mountain Time"
+          },
+          "help": "You'll be managing a US-based team and sitting in client conversations. Overlap is non-negotiable."
+        },
+        {
+          "id": "years_ops",
+          "label": "Years in an operations, general management or chief-of-staff style role",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 40,
+          "knockout": {
+            "lt": 4,
+            "reason": "Under 4 years of operations or management experience"
+          }
+        },
+        {
+          "id": "years_managing",
+          "label": "Years directly managing people (hiring, reviews, performance — not just coordinating)",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 40,
+          "knockout": {
+            "lt": 2,
+            "reason": "Under 2 years directly managing people"
+          }
+        },
+        {
+          "id": "team_size",
+          "label": "Largest team you've been directly responsible for",
+          "type": "select",
+          "required": true,
+          "options": [
+            "1–2 people",
+            "3–5 people",
+            "6–12 people",
+            "13+ people"
+          ],
+          "autoScore": {
+            "map": {
+              "1–2 people": 2,
+              "3–5 people": 3,
+              "6–12 people": 4,
+              "13+ people": 5
+            },
+            "skill": "people",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "hiring",
+          "label": "Hiring and letting people go",
+          "type": "select",
+          "required": true,
+          "options": [
+            "I've sat in on interviews but never owned a hire",
+            "I've owned hires end to end",
+            "I've owned hires end to end and have let people go, including the hard conversations"
+          ],
+          "knockout": {
+            "in": [
+              "I've sat in on interviews but never owned a hire"
+            ],
+            "reason": "Has never owned a hire"
+          },
+          "autoScore": {
+            "map": {
+              "I've sat in on interviews but never owned a hire": 1,
+              "I've owned hires end to end": 3,
+              "I've owned hires end to end and have let people go, including the hard conversations": 5
+            },
+            "skill": "judgment",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "systems",
+          "label": "Building systems and processes",
+          "type": "select",
+          "required": true,
+          "options": [
+            "I follow the processes I'm given well",
+            "I've improved existing processes and documented them",
+            "I've designed workflows, SOPs and tooling from scratch that a team still runs on"
+          ],
+          "knockout": {
+            "in": [
+              "I follow the processes I'm given well"
+            ],
+            "reason": "Hasn't built or improved processes"
+          },
+          "autoScore": {
+            "map": {
+              "I follow the processes I'm given well": 1,
+              "I've improved existing processes and documented them": 3,
+              "I've designed workflows, SOPs and tooling from scratch that a team still runs on": 5
+            },
+            "skill": "systems",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "numbers",
+          "label": "Budgets, margins and reporting",
+          "type": "select",
+          "required": true,
+          "options": [
+            "I haven't owned a budget or P&L",
+            "I've tracked a department budget and reported on it",
+            "I've owned a budget or P&L, set targets and been held to them"
+          ],
+          "autoScore": {
+            "map": {
+              "I haven't owned a budget or P&L": 1,
+              "I've tracked a department budget and reported on it": 3,
+              "I've owned a budget or P&L, set targets and been held to them": 5
+            },
+            "skill": "business",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "industry",
+          "label": "Closest industry experience",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Marketing, creative or video production agency",
+            "Media, production or content company",
+            "Other professional services (consulting, design, software, etc.)",
+            "Other"
+          ]
+        },
+        {
+          "id": "remote",
+          "label": "Years working remotely for a company based in another country",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 40
+        },
+        {
+          "id": "tools",
+          "label": "Tools you've run a team on",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g. Notion, Asana, ClickUp, Monday, Frame.io, Google Workspace, Slack, QuickBooks"
+        },
+        {
+          "id": "salary",
+          "label": "Monthly salary expectation, full-time",
+          "type": "currency",
+          "required": true,
+          "currencies": [
+            "USD",
+            "EUR",
+            "GBP",
+            "PHP",
+            "INR",
+            "PKR",
+            "ZAR",
+            "NGN",
+            "KES",
+            "EGP",
+            "MXN",
+            "BRL",
+            "ARS",
+            "COP",
+            "PEN",
+            "Other"
+          ],
+          "help": "In your local currency. We'll convert when reviewing."
+        },
+        {
+          "id": "start",
+          "label": "Earliest start date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "commitment",
+          "label": "Is this the only job you'd hold?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Yes — full-time, this would be my only role",
+            "No — I'd keep other clients or a second job"
+          ],
+          "knockout": {
+            "in": [
+              "No — I'd keep other clients or a second job"
+            ],
+            "reason": "Not available for a single full-time role"
+          }
+        },
+        {
+          "id": "english",
+          "label": "How confident is your written English — team docs, SOPs and client emails that go out under a US company's name?",
+          "type": "rating",
+          "required": true,
+          "min": 1,
+          "max": 5,
+          "scaleLabels": [
+            "Needs editing",
+            "Native-level, send as-is"
+          ],
+          "knockout": {
+            "lt": 4,
+            "reason": "Written English below 4/5"
+          }
+        },
+        {
+          "id": "english_spoken",
+          "label": "How comfortable are you leading a team meeting or a client call in English?",
+          "type": "rating",
+          "required": true,
+          "min": 1,
+          "max": 5,
+          "scaleLabels": [
+            "Not comfortable",
+            "Fluent and confident"
+          ],
+          "knockout": {
+            "lt": 4,
+            "reason": "Spoken English comfort below 4/5"
+          }
+        },
+        {
+          "id": "team_story",
+          "label": "A team you managed: the size, what it looked like when you took it over, and what was different when you left",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 120,
+          "group": "Track record — three short stories, with real numbers",
+          "placeholder": "e.g. 7-person delivery team, 40% late projects when I started. Rebuilt intake and weekly planning; under 10% late within 5 months, two people promoted.",
+          "aiScore": {
+            "tests": [
+              "ownership",
+              "excellence"
+            ],
+            "strong": "Names a before and after with numbers and ties the change to specific things they did. Mentions what happened to the people, not just the metrics. Weak answers list responsibilities with no outcome."
+          }
+        },
+        {
+          "id": "system_story",
+          "label": "A system or process you built from scratch: the problem, what you built, and what it changed",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 120,
+          "aiScore": {
+            "tests": [
+              "bravery",
+              "excellence"
+            ],
+            "strong": "A real problem, a specific design (not \"implemented Asana\"), and a measured result. Bonus if they mention what they got wrong the first time. Weak answers describe a tool rollout with no outcome."
+          }
+        },
+        {
+          "id": "people_story",
+          "label": "One person you managed who was struggling: what you figured out about how they worked, what you changed, and how it ended",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 120,
+          "aiScore": {
+            "tests": [
+              "client",
+              "ownership"
+            ],
+            "strong": "Shows real curiosity about the person — diagnosed a cause, not a symptom — and changed something about the setup, the role or the feedback, then tells the honest ending (including if it was letting them go). Weak answers are generic (\"I gave them more feedback\") or make the manager the hero."
+          }
+        }
+      ]
+    },
+    "assessment": {
+      "title": "Written Assessment",
+      "blurb": "About 30 minutes. Six scenarios from inside a small agency. We're looking at how you think, decide and communicate. Each answer is capped at 150 words.",
+      "questions": [
+        {
+          "id": "q1",
+          "prompt": "It's your first 30 days. You have a founder who's been running everything from his head, a team of about eight across video, editing and social, eight clients, and work managed in Notion, Frame.io, Google Drive and Google Chat. Tell us what you do in the first two weeks, in order, and what you deliberately don't touch yet.",
+          "maxWords": 150,
+          "tests": [
+            "ownership",
+            "excellence"
+          ],
+          "skill": "systems",
+          "strong": "Starts by listening and mapping (people, clients, how work actually flows, where it breaks) before changing anything; names one or two quick wins and explicitly defers the big rebuilds. Red flag: arrives with a tool migration or an org chart on day one."
+        },
+        {
+          "id": "q2",
+          "prompt": "A client's monthly video deliverables have been late three months running. The editor says the videographer's footage arrives late and unorganized; the videographer says the shoot schedule keeps changing because the client reschedules. Nobody has told the client anything. What do you do this week, and what do you change so it doesn't happen next month?",
+          "maxWords": 150,
+          "tests": [
+            "client",
+            "ownership"
+          ],
+          "skill": "systems",
+          "strong": "Talks to the client first and owns it without blame, then finds the actual constraint (probably intake and handoff, not the people) and designs a fix with a clear owner and a check. Red flag: picks a side between the two teammates, or fixes the symptom with a stricter deadline."
+        },
+        {
+          "id": "q3",
+          "prompt": "One of your editors is talented but keeps missing details on every delivery — wrong aspect ratio, a typo in the lower third, music not cleared. Each one is small; together they're embarrassing the agency. Walk us through the next conversation you have with them, and the system you put around it.",
+          "maxWords": 150,
+          "tests": [
+            "excellence",
+            "client"
+          ],
+          "skill": "people",
+          "strong": "Direct, specific, kind conversation that names the pattern and the stakes and asks what's going on before prescribing. Then a lightweight system (a pre-delivery checklist, a QC pass, a definition of done) rather than hovering. Red flag: avoids the conversation, or only adds a checklist without the conversation."
+        },
+        {
+          "id": "q4",
+          "prompt": "Write the message, word for word, that you'd send to the founder when you've decided one of his original hires isn't going to make it in their role. He likes this person and hired them personally.",
+          "maxWords": 150,
+          "tests": [
+            "bravery",
+            "ownership"
+          ],
+          "skill": "communication",
+          "strong": "Clear recommendation up front, evidence not feelings, acknowledges the relationship without being swayed by it, proposes a path (a defined turnaround with a date, a role change, or an exit) and asks for a decision. Red flag: hedges so much there's no recommendation, or dumps the decision on the founder."
+        },
+        {
+          "id": "q5",
+          "prompt": "You have two people on the team: one does their best work with detailed briefs and a quiet day; the other does their best work when handed a goal and left alone, and gets sloppy when micromanaged. You need the same quality bar from both. How do you run each of them, and how do you keep the standard the same?",
+          "maxWords": 150,
+          "tests": [
+            "client",
+            "excellence"
+          ],
+          "skill": "people",
+          "strong": "Separates the standard (fixed, visible, the same for everyone) from the management style (adapted to the person). Concrete: how often they check in, what the brief looks like, what \"done\" looks like for each. Red flag: treats everyone the same, or lowers the bar for the independent one."
+        },
+        {
+          "id": "q6",
+          "prompt": "The founder is on a shoot and unreachable until tomorrow. A client emails at 2pm threatening to leave over a deliverable they say doesn't match what was promised. You don't know what was promised. You have the authority to act. What do you do in the next hour, and where exactly is the line where you'd wait for him?",
+          "maxWords": 150,
+          "tests": [
+            "ownership",
+            "client"
+          ],
+          "skill": "judgment",
+          "strong": "Responds to the client fast and personally (acknowledges, asks for specifics, sets a time for a real answer), digs into the record, and makes a reasonable call on what they can commit to. Draws the line clearly: anything that changes money, scope or the relationship permanently waits; everything else they own. Red flag: either goes silent until the founder is back, or promises a refund/rework on the spot."
+        }
+      ]
+    },
+    "test": {
+      "title": "Case Study",
+      "noun": "case study",
+      "blurb": "A realistic picture of where we are, and 6–8 hours of work over 4 days to show us how you'd run it. Unpaid, tightly scoped, and the single most important part of the process.",
+      "emailBlurb": "The last step before a call is a scoped case study: a realistic picture of the agency and 6–8 hours of work to show us how you'd run it.",
+      "packageLabel": "The situation",
+      "packageNotes": [
+        "Peak Exposure Media: video-first content agency, Utah. About eight retained clients in home building, design and lifestyle, each on a monthly package of short-form social video, with occasional long-form YouTube pieces and higher-end commercial shoots on top.",
+        "The team: the founder (vision, sales, marketing, and still the person every question goes to), two videographers, a senior editor overseas, a part-time social media specialist, and a rotating group of interns. One full-time admin/operations generalist.",
+        "Tools: Notion for project management, Frame.io for client review, Google Drive for raw footage, Google Chat for team communication. All set up quickly and used inconsistently.",
+        "The pains, as the team describes them: nobody is sure what's due when; footage handoff from shoot to editor is ad hoc; client feedback lives in three places; onboarding a new client takes whoever is free; there is no regular 1:1 or review rhythm; the founder is the bottleneck on most decisions.",
+        "What's going well: clients love the work, retention is strong, and the team cares. The product isn't the problem. The operation is."
+      ],
+      "brief": [
+        {
+          "h": "Your role",
+          "p": "You've just started as Operations Manager. The founder has given you the mandate above and asked you for four things before your first monthly review together."
+        },
+        {
+          "h": "Deliverable 1 — 30/60/90 plan (one page)",
+          "p": "What you'd do in each window, in priority order, with the reason for the order. Name what you'd measure to know it worked, and what you'd deliberately leave alone until later."
+        },
+        {
+          "h": "Deliverable 2 — Redesign one workflow",
+          "p": "Take the client video project from booked shoot to delivered video and design how it should run: the stages, who owns each, the handoffs (especially shoot to editor and editor to client review), the definition of done at each stage, and where it lives in Notion, Frame.io and Drive. Deliver it as an SOP a new hire could follow and a one-screen visual (a flow, a board layout, a table — your call)."
+        },
+        {
+          "h": "Deliverable 3 — The people system",
+          "p": "How you'd run the team: the meeting rhythm (what, who, how often, how long), the 1:1 structure, how you'd learn how each person works best in the first month, and how you'd handle performance — both growth and when someone isn't meeting the bar. Include the first 1:1 agenda you'd use with the senior editor, who is overseas and has never had a manager other than the founder."
+        },
+        {
+          "h": "Deliverable 4 — The weekly ops scorecard",
+          "p": "The 6–10 numbers you'd look at every week to know the agency is healthy, why each one, where you'd get it from, and the one you'd put on the founder's desk every Monday."
+        },
+        {
+          "h": "Deliverable 5 — Loom walkthrough (required)",
+          "p": "A 5-minute Loom walking the founder through your plan as if it's your first monthly review: the biggest call you made, the one you're least sure about, and what you need from him. Communication is most of this job, so this one isn't optional. Loom is free at loom.com — install the Chrome extension or desktop app, record with your screen and mic, scroll through your doc while you talk, and paste the share link below."
+        },
+        {
+          "h": "The feel",
+          "p": "Clear, decisive and practical. Written for a founder who will read it on his phone between shoots, not a consultant's slide deck. Make calls; don't list options."
+        },
+        {
+          "h": "Format",
+          "p": "One Google Doc or Notion page we can open with the link, organized by deliverable. Polish matters, length doesn't. Set sharing to anyone with the link."
+        },
+        {
+          "h": "Also deliver",
+          "p": "Your start and finish times — track them from the moment you open this brief to when you submit."
+        },
+        {
+          "h": "File naming",
+          "p": "Title your doc: LastName_PEM_Ops_Case"
+        },
+        {
+          "h": "Deadline",
+          "p": "96 hours from when you unlock this page. Questions about the brief are welcome — there's a field for them below."
+        }
+      ],
+      "rules": [
+        "The company and the situation are real. Nothing from this package may be shared or used in your portfolio.",
+        "Don't contact our team or clients during the case study.",
+        "Where the brief is silent, make a call and tell us what you assumed. That's the job.",
+        "Questions are a good sign, not a weakness.",
+        "A late submission is still scored, but noted."
+      ],
+      "submitNote": "Paste the link to your doc and your Loom. Make sure sharing is set so anyone with the link can view.",
+      "deliverables": [
+        {
+          "id": "doc_url",
+          "label": "Link to your case study doc (Google Doc or Notion, deliverables 1–4)",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "loom_url",
+          "label": "Loom walkthrough link (required, about 5 minutes)",
+          "type": "url",
+          "required": true,
+          "helpLink": {
+            "label": "Open Loom",
+            "url": "https://www.loom.com"
+          }
+        },
+        {
+          "id": "started_at",
+          "label": "Start time (when you first opened this brief)",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "id": "finished_at",
+          "label": "Finish time (when you submitted)",
+          "type": "datetime",
+          "required": true
+        },
+        {
+          "id": "hours",
+          "label": "Total hours of actual work",
+          "type": "number",
+          "required": true,
+          "min": 0,
+          "max": 100,
+          "step": 0.5
+        },
+        {
+          "id": "assumptions",
+          "label": "What you assumed where the brief was silent",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 200
+        },
+        {
+          "id": "questions",
+          "label": "Questions you had about the brief",
+          "type": "textarea",
+          "required": false,
+          "maxWords": 200
+        }
+      ]
+    }
+  },
+  "scoring": {
+    "skill": {
+      "floor": 3.5,
+      "criteria": [
+        {
+          "id": "systems",
+          "name": "Systems and process design",
+          "weight": 2,
+          "anchors": {
+            "1": "Workflow is a tool rollout or a list of best practices; no owners, no definition of done, wouldn't survive contact with a real week",
+            "3": "Clear stages, owners and handoffs; a new hire could follow the SOP; lives sensibly in our tools",
+            "5": "Finds the real constraint (handoffs, intake), designs around it, builds in the check that catches failure early; the kind of system a team keeps using after the author leaves"
+          }
+        },
+        {
+          "id": "people",
+          "name": "People management and development",
+          "weight": 2,
+          "anchors": {
+            "1": "Generic management advice; treats everyone the same; avoids or over-formalizes performance conversations",
+            "3": "A real rhythm (meetings, 1:1s), adapts to how people work, handles underperformance directly and fairly",
+            "5": "Shows genuine curiosity about individuals, separates the standard from the style, and the senior-editor 1:1 agenda reads like someone who's done this well before"
+          }
+        },
+        {
+          "id": "judgment",
+          "name": "Judgment and decision-making",
+          "weight": 2,
+          "anchors": {
+            "1": "Either waits for the founder on everything or acts without thinking about what's reversible; hedges instead of deciding",
+            "3": "Makes reasonable calls, knows which decisions to escalate, sequences work sensibly",
+            "5": "Prioritization is sharp and explained; draws the autonomy line in exactly the right place; comfortable being wrong out loud"
+          }
+        },
+        {
+          "id": "communication",
+          "name": "Communication",
+          "weight": 1,
+          "anchors": {
+            "1": "Doc is hard to follow; Loom rambles; difficult messages are vague or harsh",
+            "3": "Clear, structured, direct; the founder could act on it from his phone",
+            "5": "Every piece lands in the first read; hard messages are direct and kind; the Loom would make a founder trust them with the team"
+          }
+        },
+        {
+          "id": "business",
+          "name": "Business and client sense",
+          "weight": 1,
+          "anchors": {
+            "1": "Scorecard is activity metrics; no link between ops and client results or margin",
+            "3": "Scorecard covers delivery, capacity, client health and money; understands what the agency sells",
+            "5": "Picks the handful of numbers that actually predict trouble, ties them to retention and margin, and the Monday number is the right one"
+          }
+        },
+        {
+          "id": "brief",
+          "name": "Brief adherence",
+          "weight": 1,
+          "floor": 3,
+          "anchors": {
+            "1": "Missing a deliverable, no Loom, ignored the feel, options instead of calls",
+            "3": "Hit every spec, assumptions stated",
+            "5": "Hit every spec and made one smart call the brief didn't ask for"
+          }
+        },
+        {
+          "id": "organization",
+          "name": "Organization and execution",
+          "weight": 1,
+          "anchors": {
+            "1": "Doc is a mess; hours implausible; plan is unsequenced",
+            "3": "Clean doc, hours in the 6–8 range, plan has a credible order",
+            "5": "Doc a teammate could run from tomorrow; efficient hours, better result; obviously the most organized person in most rooms"
+          }
+        }
+      ]
+    },
+    "values": {
+      "floor": 3,
+      "anchors": {
+        "bravery": {
+          "1": "Plan is safe and interchangeable; avoids the hard conversation; no recommendation in the message to the founder",
+          "3": "Makes at least one distinct call and defends it; delivers hard news directly",
+          "5": "Takes a clear position on what to change and what to leave alone; tells the founder something he may not want to hear, well"
+        },
+        "excellence": {
+          "1": "Shortcuts visible: template SOP, vague scorecard, missed naming spec, thin Loom",
+          "3": "Clean work, specs met, hours plausible, details handled",
+          "5": "Every detail handled; the standard they'd hold the team to is visible in their own work; chose the harder-but-better option and said so"
+        },
+        "client": {
+          "1": "Ops as an end in itself; clients absent from the plan; team treated as resources",
+          "3": "Plan is framed around client delivery and the people doing it; handles the late-client scenario with the client first",
+          "5": "Every system choice is justified by what it does for client results and for the team's success; would calm an actual client and an actual teammate"
+        },
+        "ownership": {
+          "1": "Waits for the founder on everything, or blames the setup; no assumptions stated; late without notice",
+          "3": "Owns the plan; states assumptions; hits the deadline; asks at least one real question",
+          "5": "Reads like someone who already runs the company; names what they need from the founder and what they don't; explains trade-offs like a partner"
+        }
+      }
+    },
+    "decision": {
+      "advanceToCall": "Skill ≥ 3.5 with no criterion at 1, brief adherence ≥ 3, every value ≥ 3, Loom submitted",
+      "hireBar": "Skill ≥ 4 and Values ≥ 4 after at least two calls (one with the founder, one with a team member they'd manage)"
+    }
+  }
+}
