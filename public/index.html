@@ -44,6 +44,10 @@
     const { brand, role } = await api(`/roles/${encodeURIComponent(slug)}`);
     applyBrand(brand);
     document.title = `${role.title} — ${brand.company}`;
+    if (role.status !== "open") {
+      main.innerHTML = `<p class="eyebrow">${esc(role.type)} · ${esc(role.location)}</p><h1>${esc(role.title)}</h1><p class="lead">We're not taking applications for this role right now. <a href="/">See what's open</a>, or check back soon.</p>`;
+      return;
+    }
     const app = role.stages.application;
     const stages = [role.stages.application, role.stages.assessment, role.stages.test].filter(Boolean);
 

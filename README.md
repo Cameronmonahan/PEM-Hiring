@@ -91,6 +91,15 @@ page shows two steps, the dashboard hides the test tab and columns, and the
 Skill criteria are scored by hand from the application links and written
 answers. Leave `stages.test` out of any role file to get this behavior.
 
+## Pausing a role
+
+The dashboard's **● Live — pause / ○ Paused — make live** button (top bar, next
+to the role picker) toggles a role without a deploy. Paused roles disappear
+from the careers page, the apply link shows a "not taking applications" note,
+and the API refuses new applications. Existing candidates keep their links and
+you can still work their pipeline. The override lives in the `role_settings`
+table (created automatically) and takes precedence over `status` in the JSON.
+
 ## Adding a role
 
 1. Copy `config/roles/senior-video-editor.json` to a new file and edit:

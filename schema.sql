@@ -37,3 +37,10 @@ CREATE TABLE IF NOT EXISTS events (
   at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_events_candidate ON events(candidate_id, at);
+
+-- Per-role live/paused override set from the dashboard (created automatically on first use).
+CREATE TABLE IF NOT EXISTS role_settings (
+  slug TEXT PRIMARY KEY,
+  status TEXT NOT NULL,     -- open | paused
+  updated_at TEXT NOT NULL
+);

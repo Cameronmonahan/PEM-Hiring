@@ -35,7 +35,7 @@ export async function onRequest(context) {
   const parts = path.split("/").filter(Boolean);
   try {
     if (request.method === "OPTIONS") return new Response(null, { status: 204 });
-    if (parts[0] === "roles") return handleRoles(parts);
+    if (parts[0] === "roles") return handleRoles(env, parts);
     if (parts[0] === "apply" && request.method === "POST") return handleApply(request, env, parts[1], url);
     if (parts[0] === "c" && parts[1]) return handleCandidate(request, env, parts, url);
     if (parts[0] === "admin") return handleAdmin(request, env, parts, url);
@@ -74,18 +74,36 @@ function fmtDue(iso) { return new Date(iso).toUTCString().replace(" GMT", " UTC"
 
 // ---------------------------------------------------------------- public
 
-function handleRoles(parts) {
+// ---- Role status overrides (live / paused), stored in D1 so the dashboard can toggle without a deploy ----
+async function roleStatusOverrides(env) {
+  await env.DB.prepare("CREATE TABLE IF NOT EXISTS role_settings (slug TEXT PRIMARY KEY, status TEXT NOT NULL, updated_at TEXT NOT NULL)").run();
+  const { results } = await env.DB.prepare("SELECT slug, status FROM role_settings").all();
+  return Object.fromEntries((results || []).map((r) => [r.slug, r.status]));
+}
+async function effectiveRoles(env) {
+  const o = await roleStatusOverrides(env);
+  return roles.map((r) => ({ ...r, status: o[r.slug] || r.status }));
+}
+async function effectiveRole(env, slug) {
+  const r = getRole(slug);
+  if (!r) return null;
+  const o = await roleStatusOverrides(env);
+  return { ...r, status: o[slug] || r.status };
+}
+
+async function handleRoles(env, parts) {
   if (parts[1]) {
-    const r = getRole(parts[1]);
+    const r = await effectiveRole(env, parts[1]);
     if (!r) return json({ error: "Role not found" }, 404);
     return json({ brand: publicBrand(), role: publicRole(r) });
   }
-  return json({ brand: publicBrand(), roles: roles.filter((r) => r.status === "open").map((r) => ({ slug: r.slug, title: r.title, location: r.location, type: r.type, summary: r.summary })) });
+  const all = await effectiveRoles(env);
+  return json({ brand: publicBrand(), roles: all.filter((r) => r.status === "open").map((r) => ({ slug: r.slug, title: r.title, location: r.location, type: r.type, summary: r.summary })) });
 }
 function publicBrand() { return { company: brand.company, shortName: brand.shortName, tagline: brand.tagline, website: brand.website, logoLight: brand.logoLight, logoGold: brand.logoGold, icon: brand.icon, colors: brand.colors, fonts: brand.fonts, fromEmail: brand.fromEmail }; }
 
 async function handleApply(request, env, slug, url) {
-  const role = getRole(slug);
+  const role = await effectiveRole(env, slug);
   if (!role || role.status !== "open") return json({ error: "This role is not open" }, 404);
   const body = await readJson(request);
   const answers = body.answers || {};
@@ -226,7 +244,16 @@ async function handleAdmin(request, env, parts, url) {
     }
     return json({ error: "Unknown check" }, 400);
   }
-  if (sub === "roles") return json({ roles, brand });
+  if (sub === "roles" && parts[2] && parts[3] === "status" && request.method === "POST") {
+    const r = getRole(parts[2]);
+    if (!r) return json({ error: "Role not found" }, 404);
+    const body = await readJson(request);
+    const status = body.status === "open" ? "open" : "paused";
+    await roleStatusOverrides(env);
+    await env.DB.prepare("INSERT INTO role_settings (slug, status, updated_at) VALUES (?, ?, ?) ON CONFLICT(slug) DO UPDATE SET status=excluded.status, updated_at=excluded.updated_at").bind(parts[2], status, now()).run();
+    return json({ ok: true, status });
+  }
+  if (sub === "roles") return json({ roles: await effectiveRoles(env), brand });
 
   if (sub === "candidates") {
     const cid = parts[2];

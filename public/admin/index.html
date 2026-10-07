@@ -115,7 +115,8 @@
     const role = roles.find((r) => r.slug === roleSlug);
     root.innerHTML = `
       <div class="topbar">
-        <select id="roleSel">${roles.map((r) => `<option value="${r.slug}" ${r.slug === roleSlug ? "selected" : ""}>${esc(r.title)} (${r.status})</option>`).join("")}</select>
+        <select id="roleSel">${roles.map((r) => `<option value="${r.slug}" ${r.slug === roleSlug ? "selected" : ""}>${esc(r.title)} · ${r.status === "open" ? "Live" : "Paused"}</option>`).join("")}</select>
+        <button class="btn ghost sm" id="toggleLive" style="${role?.status === "open" ? "border-color:var(--ok);color:var(--ok)" : "border-color:var(--warn);color:var(--warn)"}" title="${role?.status === "open" ? "Applications are open. Click to pause." : "Listing is hidden and applications are closed. Click to make live."}">${role?.status === "open" ? "● Live — pause" : "○ Paused — make live"}</button>
         <a class="btn ghost sm" href="/?role=${roleSlug}" target="_blank">Public page ↗</a>
         <button class="btn ghost sm" id="copyLink">Copy apply link</button>
         <button class="btn sm" id="addBtn">+ Add candidate</button>
@@ -141,6 +142,12 @@
       </div>
       <div class="grid"><div class="panel pipeline" id="pipe"></div><div class="panel detail" id="detail"><p class="empty">Select a candidate.</p></div></div>`;
     $("#roleSel").onchange = (e) => { roleSlug = e.target.value; localStorage.setItem("pem_admin_role", roleSlug); selected = null; loadList(); };
+    $("#toggleLive").onclick = async () => {
+      const next = role.status === "open" ? "paused" : "open";
+      if (next === "paused" && !confirm(`Pause ${role.title}? It disappears from the careers page and the apply link stops accepting applications. Existing candidates keep their links.`)) return;
+      const r = await api(`/admin/roles/${encodeURIComponent(roleSlug)}/status`, { method: "POST", body: { status: next } });
+      role.status = r.status; render(); toast(next === "open" ? `${role.title} is live` : `${role.title} paused`);
+    };
     $("#copyLink").onclick = () => { navigator.clipboard.writeText(`${me.careersUrl}/?role=${roleSlug}`); toast("Apply link copied"); };
     $("#addBtn").onclick = showAddForm;
     $("#logout").onclick = async () => { await api("/admin/logout", { method: "POST" }); location.reload(); };
