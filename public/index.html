@@ -45,7 +45,7 @@
     applyBrand(brand);
     document.title = `${role.title} — ${brand.company}`;
     const app = role.stages.application;
-    const stages = [role.stages.application, role.stages.assessment, role.stages.test];
+    const stages = [role.stages.application, role.stages.assessment, role.stages.test].filter(Boolean);
 
     main.innerHTML = `
       <p class="eyebrow">${esc(role.type)} · ${esc(role.location)}</p>

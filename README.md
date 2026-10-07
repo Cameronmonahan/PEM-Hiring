@@ -82,6 +82,15 @@ the "strong answer looks like" hints and you score values by hand.
   four values, and the verdict updates live. **Advance to call** or **Reject**.
 - Notes and a timeline live on each candidate.
 
+## Roles without a test stage (interns)
+
+The three intern roles (`social-media-intern`, `video-editor-intern`,
+`videography-intern`) have no `stages.test` block. For those, the candidate
+page shows two steps, the dashboard hides the test tab and columns, and the
+**Advance to call** button appears as soon as the written assessment is in.
+Skill criteria are scored by hand from the application links and written
+answers. Leave `stages.test` out of any role file to get this behavior.
+
 ## Adding a role
 
 1. Copy `config/roles/senior-video-editor.json` to a new file and edit:

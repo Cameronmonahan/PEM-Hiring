@@ -44,17 +44,17 @@
     if (i === 1) return pos > 1 ? "done" : pos === 1 ? "active" : "locked";
     if (i === 2) return pos > 2 ? "done" : pos === 2 ? "active" : "locked";
   };
-  const stages = [role.stages.application, role.stages.assessment, role.stages.test];
+  const stages = [role.stages.application, role.stages.assessment, role.stages.test].filter(Boolean);
   const progress = () => `<div class="steps">${stages.map((st, i) => { const k = stageState(i); return `<div class="step ${k}"><div class="n">${k === "done" ? "✓" : i + 1}</div><div><b>${esc(st.title)}</b><small>${esc(st.blurb)}</small></div></div>`; }).join("")}</div>`;
 
-  const noun = role.stages.test.noun || "test edit";
+  const noun = role.stages.test?.noun || "test edit";
   const Noun = noun.charAt(0).toUpperCase() + noun.slice(1);
   function showHome(extraHtml = "") {
     let headline, body;
     switch (s) {
       case "applied": headline = "Application received"; body = "Your application is with us. We reply within 24 hours, and this link will update when the next step opens."; break;
-      case "assessment": headline = `Welcome, ${esc(first)}`; body = "Your application cleared our first screen. The written assessment is open — six questions, about 25 minutes. There's no timer and you can take your time, but please submit in one sitting."; break;
-      case "assessment_done": headline = "Assessment received"; body = "Thanks — your answers are in. We read every one personally and will reply within 24 hours."; break;
+      case "assessment": headline = `Welcome, ${esc(first)}`; body = `Your application cleared our first screen. The written assessment is open — ${role.stages.assessment.blurb.replace(/\.$/, "")}. There's no timer and you can take your time, but please submit in one sitting.`; break;
+      case "assessment_done": headline = "Assessment received"; body = role.stages.test ? "Thanks — your answers are in. We read every one personally and will reply within 24 hours." : "Thanks — your answers are in. That's everything we need before a call. We read every one personally and will reply within 24 hours."; break;
       case "test": headline = `The ${noun} is open`; body = "This is the single most important step. Read the brief carefully; the window is 72 hours from when it was unlocked."; break;
       case "test_done": headline = `${Noun} received`; body = "Thank you. We score every submission against the same rubric and will be in touch within 24 hours."; break;
       case "call": headline = "Let's talk"; body = "Your work cleared our bar. Check your email — we'd like to book a call."; break;

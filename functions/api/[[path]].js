@@ -156,6 +156,7 @@ async function handleCandidate(request, env, parts, url) {
   }
 
   if (request.method === "POST" && parts[2] === "test") {
+    if (!role.stages.test) return json({ error: "This role has no test stage" }, 404);
     if (row.status !== "test") return json({ error: "The test edit isn't open for this link" }, 403);
     const body = await readJson(request);
     const answers = body.answers || {};
@@ -298,6 +299,7 @@ async function handleAdmin(request, env, parts, url) {
       if (!STATUSES.includes(status)) return json({ error: "Bad status" }, 400);
       const t = now();
       let due = row.test_due_at, unlocked = row.test_unlocked_at;
+      if (status === "test" && !role.stages.test) return json({ error: "This role has no test stage" }, 400);
       if (status === "test" && row.status !== "test") { unlocked = t; due = new Date(Date.now() + role.flow.testDeadlineHours * 3600e3).toISOString(); }
       await env.DB.prepare("UPDATE candidates SET status=?, test_unlocked_at=?, test_due_at=?, rejected_reason=?, updated_at=? WHERE id=?")
         .bind(status, unlocked, due, status === "rejected" ? (body.reason || "Manual") : row.rejected_reason, t, cid).run();
@@ -331,5 +333,5 @@ function summarize(r) {
   const role = getRole(r.role_slug);
   const sc = role ? computeScorecard(role, r) : null;
   const app = safeJson(r.application) || {};
-  return { id: r.id, role_slug: r.role_slug, name: r.name, email: r.email, status: r.status, country: app.country, years: app.years, salary: app.salary, auto_flags: safeJson(r.auto_flags) || [], created_at: r.created_at, updated_at: r.updated_at, test_due_at: r.test_due_at, test_submitted_at: r.test_submitted_at, scorecard: sc && { skill: sc.skill.score, values: sc.values.score, written: sc.written.score, recommendation: sc.recommendation } };
+  return { id: r.id, role_slug: r.role_slug, name: r.name, email: r.email, status: r.status, country: app.country || app.city, years: app.years, hours: app.hours, salary: app.salary, auto_flags: safeJson(r.auto_flags) || [], created_at: r.created_at, updated_at: r.updated_at, test_due_at: r.test_due_at, test_submitted_at: r.test_submitted_at, scorecard: sc && { skill: sc.skill.score, values: sc.values.score, written: sc.written.score, recommendation: sc.recommendation } };
 }

@@ -162,14 +162,16 @@
     const pipe = $("#pipe");
     pipe.innerHTML = COLS.map(([st, label]) => {
       const rows = list.filter((c) => c.status === st);
-      if (!rows.length && !["applied", "assessment", "test_done"].includes(st)) return "";
+      const hasTest = !!roles.find((r) => r.slug === roleSlug)?.stages?.test;
+      const always = hasTest ? ["applied", "assessment", "test_done"] : ["applied", "assessment", "assessment_done"];
+      if (!rows.length && !always.includes(st)) return "";
       return `<div><div class="col-title"><span>${label}</span><span>${rows.length}</span></div>${rows.length ? rows.map(row).join("") : `<div class="empty">None</div>`}</div>`;
     }).join("");
     pipe.querySelectorAll(".crow").forEach((el) => el.onclick = () => select(el.dataset.id));
   }
   function row(c) {
     const sc = c.scorecard || {};
-    return `<div class="crow ${selected?.candidate?.id === c.id ? "sel" : ""}" data-id="${c.id}"><div><b>${esc(c.name)}</b><small>${esc(c.country || "")} · ${c.years ?? "?"} yrs · ${fmtDate(c.created_at)}</small>${c.auto_flags?.length ? `<div class="flag">⚠ ${esc(c.auto_flags.join("; "))}</div>` : ""}</div>
+    return `<div class="crow ${selected?.candidate?.id === c.id ? "sel" : ""}" data-id="${c.id}"><div><b>${esc(c.name)}</b><small>${[c.country, c.years != null ? `${c.years} yrs` : c.hours ? `${c.hours} hrs/wk` : null, fmtDate(c.created_at)].filter(Boolean).map(esc).join(" · ")}</small>${c.auto_flags?.length ? `<div class="flag">⚠ ${esc(c.auto_flags.join("; "))}</div>` : ""}</div>
       <div class="scores" title="Written / Skill / Values"><span class="sc ${scClass(sc.written, 3)}">${fmt(sc.written)}</span><span class="sc ${scClass(sc.skill)}">${fmt(sc.skill)}</span><span class="sc ${scClass(sc.values, 3)}">${fmt(sc.values)}</span></div></div>`;
   }
 
@@ -205,7 +207,8 @@
       ${sc.floors.reasons.length ? `<div class="flag">Floors: ${esc(sc.floors.reasons.join(" · "))}</div>` : ""}
       <div class="actions" style="margin:14px 0 4px">
         ${c.status === "applied" ? `<button class="btn sm" data-status="assessment">Unlock assessment</button>` : ""}
-        ${["assessment_done", "assessment"].includes(c.status) ? `<button class="btn sm" data-status="test">Unlock ${esc(testNoun(role))} (72h)</button>` : ""}
+        ${["assessment_done", "assessment"].includes(c.status) && role.stages.test ? `<button class="btn sm" data-status="test">Unlock ${esc(testNoun(role))} (72h)</button>` : ""}
+        ${["assessment_done", "assessment"].includes(c.status) && !role.stages.test ? `<button class="btn sm" data-status="call">Advance to call</button>` : ""}
         ${c.status === "test_done" ? `<button class="btn sm" data-status="call">Advance to call</button>` : ""}
         ${c.status === "call" ? `<button class="btn sm" data-status="hired">Mark hired</button>` : ""}
         ${c.status !== "rejected" ? `<button class="btn danger sm" data-status="rejected">Reject</button>` : `<button class="btn ghost sm" data-status="applied">Reopen</button>`}
@@ -213,11 +216,11 @@
         ${me.ai ? `<button class="btn ghost sm" id="rescore">Re-run AI scoring</button>` : ""}
         <button class="btn ghost sm" id="del" style="margin-left:auto;color:var(--bad)">Delete</button>
       </div>
-      <div class="tabs"><button class="on" data-tab="score">Score</button><button data-tab="app">Application</button><button data-tab="assess">Written answers</button><button data-tab="test">${esc(TestNoun(role))}</button><button data-tab="notes">Notes & timeline</button></div>
+      <div class="tabs"><button class="on" data-tab="score">Score</button><button data-tab="app">Application</button><button data-tab="assess">Written answers</button>${role.stages.test ? `<button data-tab="test">${esc(TestNoun(role))}</button>` : ""}<button data-tab="notes">Notes & timeline</button></div>
 
       <div class="tab on" id="tab-score">
         ${ai.summary ? `<div class="callout"><span class="ai-badge">AI</span>${esc(ai.summary)}${ai.english ? ` <br><small style="color:var(--muted-2)">Written English ${ai.english.score}/5 — ${esc(ai.english.rationale)}</small>` : ""}</div>` : me.ai ? `<p class="empty">AI scoring runs when written answers come in.</p>` : ""}
-        <h3 style="margin-top:18px">Skill — from the ${esc(testNoun(role))}</h3>
+        <h3 style="margin-top:18px">Skill — from the ${role.stages.test ? esc(testNoun(role)) : "application, portfolio and written answers"}</h3>
         <div class="rubric">${role.scoring.skill.criteria.map((cr) => seg("skill", cr.id, cr.name, `${cr.anchors["1"]} · ${cr.anchors["3"]} · ${cr.anchors["5"]}`, sc.skill.scores[cr.id], null, cr.weight > 1 ? `×${cr.weight}` : "", sc.skill.auto[cr.id] ? `Self-rated ${sc.skill.auto[cr.id].score}/5` : "")).join("")}</div>
         <h3 style="margin-top:22px">Values</h3>
         <div class="rubric">${role.values.map((v) => { const a = role.scoring.values.anchors[v.key] || {}; const aiv = ai.values?.[v.key]; return seg("values", v.key, v.name, `${a["1"]} · ${a["3"]} · ${a["5"]}`, sc.values.scores[v.key], sc.values.source[v.key] === "ai" ? aiv?.score : null, "", aiv ? `AI ${aiv.score}/5 — ${aiv.rationale}` : ""); }).join("")}</div>
@@ -235,7 +238,7 @@
 
       <div class="tab" id="tab-test">
         ${due ? `<div class="kv"><div>Unlocked</div><div>${fmtDate(c.test_unlocked_at)}</div><div>Due</div><div>${due}</div><div>Submitted</div><div>${c.test_submitted_at ? fmtDate(c.test_submitted_at) + (late ? ' <span class="flag">LATE</span>' : " · on time") : "–"}</div></div>` : ""}
-        ${c.test ? `<div class="kv">${role.stages.test.deliverables.filter((f) => f.type !== "textarea").map((f) => { let v = c.test[f.id]; if (f.type === "url" && v) v = `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`; else if (f.type === "datetime" && v) v = esc(fmtDate(v)); else v = esc(v ?? "–"); return `<div>${esc(f.label)}</div><div>${v}</div>`; }).join("")}</div>
+        ${c.test && role.stages.test ? `<div class="kv">${role.stages.test.deliverables.filter((f) => f.type !== "textarea").map((f) => { let v = c.test[f.id]; if (f.type === "url" && v) v = `<a href="${esc(v)}" target="_blank" rel="noopener">${esc(v)}</a>`; else if (f.type === "datetime" && v) v = esc(fmtDate(v)); else v = esc(v ?? "–"); return `<div>${esc(f.label)}</div><div>${v}</div>`; }).join("")}</div>
           ${role.stages.test.deliverables.filter((f) => f.type === "textarea").map((f) => answer(f.label, c.test[f.id], ai.questions?.["test_" + f.id])).join("")}` : `<p class="empty">Not submitted yet.</p>`}
       </div>
 
@@ -291,7 +294,7 @@
         <div class="field"><label>Start them at</label>
           <div class="rating" style="gap:10px">
             <label class="pill opt"><input type="radio" name="startAt" value="assessment" checked> Written assessment</label>
-            <label class="pill opt"><input type="radio" name="startAt" value="test"> ${esc(TestNoun(role))} (72h window starts now)</label>
+            ${role.stages.test ? `<label class="pill opt"><input type="radio" name="startAt" value="test"> ${esc(TestNoun(role))} (72h window starts now)</label>` : ""}
           </div></div>
         <div class="field"><label class="pill opt"><input type="checkbox" id="a_send" ${me.email ? "checked" : "disabled"}> ${me.email ? "Email them the invite now" : "Emails are off — you'll copy the link"}</label></div>
         <div class="form-error" id="a_err" hidden></div>

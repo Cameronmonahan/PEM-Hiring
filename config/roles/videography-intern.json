@@ -1,0 +1,475 @@
+{
+  "slug": "videography-intern",
+  "title": "Videography Intern",
+  "status": "open",
+  "location": "In person — Provo, UT + client shoots",
+  "type": "Internship · Unpaid · 5–10+ hrs/wk",
+  "summary": "Learn to shoot cinematic brand content on real client shoots — composition, light, movement — alongside our videographers.",
+  "intro": [
+    "Peak Exposure Media is a video-first content marketing agency in Provo, Utah. We make cinematic social content for premium brands in home building, design and lifestyle, and we act as the outsourced marketing department for most of our clients. We're looking for a Videography Intern to join our videographers on real client shoots.",
+    "This is an unpaid, in-person internship: 5–10 hours a week minimum (more if you want it), any start date, one semester or longer. You'll get full access to our gear and office, a stipend for travel to client locations, and lunch on us at team meetings. If you need it for school credit, we'll sign whatever your program needs.",
+    "Here's the honest deal. You'll own one real, recurring piece of client work for the whole semester and get good at it, with our team coaching you along the way. That might be second-camera and B-roll on shoots, running a recurring content day for one client, setting up and breaking down, or shooting behind-the-scenes. You don't need to be great yet. You do need a baseline — this isn't a start-from-zero program — and you need to care about getting better.",
+    "We hire for four things: creative bravery, excellence over easy, client obsession and an ownership mentality. Interns too."
+  ],
+  "processNote": "Two steps, both before an interview: a short application and a short written assessment. No test project. We reply to everyone within 24 hours of each step.",
+  "values": [
+    {
+      "key": "bravery",
+      "name": "Creative Bravery",
+      "desc": "Push past \"safe\" and generic."
+    },
+    {
+      "key": "excellence",
+      "name": "Excellence Over Easy",
+      "desc": "Quality matters; don't rush or choose the easy route."
+    },
+    {
+      "key": "client",
+      "name": "Client-Obsessed",
+      "desc": "Care deeply about the client's results, not just completing deliverables."
+    },
+    {
+      "key": "ownership",
+      "name": "Ownership Mentality",
+      "desc": "Act like it's your company, not just a job."
+    }
+  ],
+  "flow": {
+    "autoAdvanceToAssessment": true
+  },
+  "stages": {
+    "application": {
+      "title": "Application",
+      "blurb": "About 10 minutes. We'll ask what you've shot on, for two things you've made, and what you want to learn.",
+      "fields": [
+        {
+          "id": "name",
+          "label": "Full name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "phone",
+          "label": "Phone",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "city",
+          "label": "Where you live (city)",
+          "type": "text",
+          "required": true,
+          "help": "This internship is in person at our Provo office, with occasional client shoots along the Wasatch Front."
+        },
+        {
+          "id": "school",
+          "label": "Where you're at right now",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Student — college or university",
+            "Student — high school",
+            "Recent grad or between things",
+            "Not in school, early in my career"
+          ]
+        },
+        {
+          "id": "credit",
+          "label": "Do you need this to count for school credit?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Yes — I'll need paperwork signed",
+            "No",
+            "Not sure yet"
+          ]
+        },
+        {
+          "id": "hours",
+          "label": "Hours per week you can commit, in person",
+          "type": "select",
+          "required": true,
+          "options": [
+            "15+",
+            "10–15",
+            "5–10",
+            "Under 5"
+          ],
+          "knockout": {
+            "in": [
+              "Under 5"
+            ],
+            "reason": "Under 5 hours per week"
+          }
+        },
+        {
+          "id": "days",
+          "label": "Days and times you're usually free to be at the office",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g. Tue/Thu afternoons, Fridays all day"
+        },
+        {
+          "id": "start",
+          "label": "When could you start?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "length",
+          "label": "How long are you hoping to intern?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "One semester",
+            "Two semesters",
+            "Summer",
+            "Open-ended"
+          ]
+        },
+        {
+          "id": "cameras",
+          "label": "Cameras you've shot with",
+          "type": "text",
+          "required": true,
+          "group": "Camera background",
+          "placeholder": "e.g. Sony a7 IV, Canon R6, Lumix S5, FX3, BMPCC, a DSLR from school"
+        },
+        {
+          "id": "real_camera",
+          "label": "Have you shot and finished a project on a real camera (not only a phone)?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "No — phone only so far",
+            "Yes — a few things",
+            "Yes — I shoot on a real camera regularly"
+          ],
+          "knockout": {
+            "in": [
+              "No — phone only so far"
+            ],
+            "reason": "Phone-only, no camera experience"
+          },
+          "autoScore": {
+            "map": {
+              "No — phone only so far": 1,
+              "Yes — a few things": 3,
+              "Yes — I shoot on a real camera regularly": 4
+            },
+            "skill": "camera",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "manual",
+          "label": "How do you usually shoot?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Mostly auto — I haven't learned manual settings yet",
+            "Manual or semi-manual — I set shutter, aperture and ISO on purpose",
+            "Full manual with a plan — I pick frame rate, shutter angle, white balance and picture profile for the look I want"
+          ],
+          "knockout": {
+            "in": [
+              "Mostly auto — I haven't learned manual settings yet"
+            ],
+            "reason": "Shoots on auto only"
+          },
+          "autoScore": {
+            "map": {
+              "Mostly auto — I haven't learned manual settings yet": 1,
+              "Manual or semi-manual — I set shutter, aperture and ISO on purpose": 3,
+              "Full manual with a plan — I pick frame rate, shutter angle, white balance and picture profile for the look I want": 5
+            },
+            "skill": "camera",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "gear",
+          "label": "Do you have your own camera or reliable access to one?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "I own one",
+            "I can borrow one (school, friend, family)",
+            "No — I'd need to use yours"
+          ],
+          "help": "Not a dealbreaker — you'll get access to our gear — but it changes what you can practice between shoots."
+        },
+        {
+          "id": "stabilization",
+          "label": "Gear you've used besides the camera",
+          "type": "text",
+          "required": false,
+          "placeholder": "e.g. gimbal, slider, tripod with fluid head, ND filters, LED panels, lav or shotgun mic"
+        },
+        {
+          "id": "editing",
+          "label": "Can you edit what you shoot?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "No",
+            "Basic cuts",
+            "Yes, comfortably"
+          ]
+        },
+        {
+          "id": "drive",
+          "label": "Can you get yourself to client locations along the Wasatch Front?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Yes — I have a car",
+            "Sometimes — I can usually arrange it",
+            "No"
+          ],
+          "help": "We cover travel with a stipend; you need a way to get there."
+        },
+        {
+          "id": "work_1",
+          "label": "Something you shot — your best (link)",
+          "type": "url",
+          "required": true,
+          "group": "Show us two things you've shot",
+          "help": "YouTube, Instagram, Drive, Vimeo — anything we can open. Personal projects, school work, a friend's event — all fine."
+        },
+        {
+          "id": "work_1_detail",
+          "label": "What you shot it on, what you were going for, and the one shot you're proudest of and why",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 100,
+          "aiScore": {
+            "tests": [
+              "excellence",
+              "bravery"
+            ],
+            "strong": "Talks about a specific frame in terms of composition, light or movement — why the camera was there. Red flag: only talks about the subject, not the image."
+          }
+        },
+        {
+          "id": "work_2",
+          "label": "A second piece (link)",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "work_2_detail",
+          "label": "What it is and what you'd reshoot if you could",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 60,
+          "aiScore": {
+            "tests": [
+              "ownership",
+              "excellence"
+            ],
+            "strong": "Honest, specific about what didn't work (exposure, shaky move, flat light, framing) and knows how to fix it."
+          }
+        },
+        {
+          "id": "admire",
+          "label": "A videographer, DP or brand whose visual style you study, and what you've taken from it",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "bravery",
+              "excellence"
+            ],
+            "strong": "Names someone real and a specific visual idea (how they use negative space, natural light, slow push-ins, color). Red flag: 'cinematic' with nothing behind it."
+          }
+        },
+        {
+          "id": "goals",
+          "label": "What do you want to be able to do by the end of this internship that you can't do today?",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 100,
+          "group": "About you",
+          "aiScore": {
+            "tests": [
+              "ownership",
+              "excellence"
+            ],
+            "strong": "Specific, concrete skills ('cut a Reel from raw footage to a client-ready export in under two hours'), not 'learn more about video.' Shows they've thought about where they're weak."
+          }
+        },
+        {
+          "id": "self_taught",
+          "label": "Something you taught yourself in the last year, and how",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "ownership"
+            ],
+            "strong": "Names a real thing and the path they took (tutorials, copying someone's style, making 20 bad versions). Red flag: nothing, or only things a class made them do."
+          }
+        },
+        {
+          "id": "why_pem",
+          "label": "Why Peak Exposure Media, and why this role?",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "client",
+              "bravery"
+            ],
+            "strong": "Has looked at our work or clients and says something specific. Red flag: could be pasted into any application."
+          }
+        }
+      ]
+    },
+    "assessment": {
+      "title": "Written Assessment",
+      "blurb": "About 20 minutes. Four short questions, 100 words each.",
+      "questions": [
+        {
+          "id": "q1",
+          "prompt": "You walk into a finished kitchen in a custom home at 2pm. Big windows on one side, no lights with you, one camera, one lens. What do you shoot first and how do you make it look good in camera?",
+          "maxWords": 100,
+          "tests": [
+            "excellence",
+            "ownership"
+          ],
+          "skill": "composition",
+          "strong": "Reads the light (where the window is, when to shoot toward vs. with it, exposing for highlights), picks a shot order (wide establishing, then details, then movement), mentions leading lines or symmetry. Red flag: 'I'd fix it in post' or no mention of light."
+        },
+        {
+          "id": "q2",
+          "prompt": "Pick any frame from a video or film you love (describe it or link it). Why does it work as a composition?",
+          "maxWords": 100,
+          "tests": [
+            "bravery",
+            "excellence"
+          ],
+          "skill": "composition",
+          "strong": "Talks about where the eye goes and why: placement, depth, negative space, light direction, color, lens choice. Red flag: describes what's happening in the scene instead of the image."
+        },
+        {
+          "id": "q3",
+          "prompt": "The builder you're filming is stiff on camera and keeps looking at the lens. You have five minutes. What do you do?",
+          "maxWords": 100,
+          "tests": [
+            "client",
+            "ownership"
+          ],
+          "skill": "onset",
+          "strong": "Gets them moving and talking about something they care about, shoots while they're not 'performing', changes the setup (walk-and-talk, over-shoulder, interview with the interviewer off-axis). Shows they'd take care of the client. Red flag: 'tell them to relax.'"
+        },
+        {
+          "id": "q4",
+          "prompt": "A shot you planned isn't working — the room is too small for the move you wanted. What's your next move, and how do you decide?",
+          "maxWords": 100,
+          "tests": [
+            "bravery",
+            "excellence"
+          ],
+          "skill": "onset",
+          "strong": "Adapts quickly: wider lens, shoot from the doorway, a detail-driven sequence instead of one move, use a mirror or window. Decides based on what the shot needs to say. Red flag: forces the original plan or skips it."
+        }
+      ]
+    }
+  },
+  "scoring": {
+    "skill": {
+      "floor": 3,
+      "criteria": [
+        {
+          "id": "composition",
+          "name": "Composition and light (from their links)",
+          "weight": 2,
+          "anchors": {
+            "1": "Flat, centered, blown highlights, no intent",
+            "3": "Frames are considered; exposure is controlled; understands where the light is",
+            "5": "Frames you'd steal — depth, light direction and movement all chosen on purpose"
+          }
+        },
+        {
+          "id": "camera",
+          "name": "Camera baseline",
+          "weight": 2,
+          "anchors": {
+            "1": "Auto everything; phone only",
+            "3": "Shoots manual with purpose; footage is clean and stable",
+            "5": "Picks frame rate, shutter, profile and lens for the look; could run a second camera on a client shoot tomorrow"
+          }
+        },
+        {
+          "id": "onset",
+          "name": "Thinking on set",
+          "weight": 1,
+          "anchors": {
+            "1": "Freezes or forces the plan",
+            "3": "Adapts to the room, the light and the subject",
+            "5": "Turns constraints into better shots; makes the subject comfortable"
+          }
+        },
+        {
+          "id": "taste",
+          "name": "Taste and reference",
+          "weight": 1,
+          "anchors": {
+            "1": "No references or 'cinematic' with nothing behind it",
+            "3": "Studies specific DPs or brands and names techniques",
+            "5": "References match premium home and lifestyle work; restraint over flash"
+          }
+        },
+        {
+          "id": "logistics",
+          "name": "Reliability and logistics",
+          "weight": 1,
+          "anchors": {
+            "1": "No way to reach shoots, vague availability",
+            "3": "Can get to client locations and has set hours",
+            "5": "Owns gear, flexible, would show up early"
+          }
+        }
+      ]
+    },
+    "values": {
+      "floor": 3,
+      "anchors": {
+        "bravery": {
+          "1": "Everything they point to is safe and interchangeable; can't name a creative risk they've taken",
+          "3": "Has at least one distinct creative choice they can defend",
+          "5": "Clear taste and a point of view already forming; tries things most beginners wouldn't"
+        },
+        "excellence": {
+          "1": "Shortcuts visible: thin answers, broken links, didn't read the questions",
+          "3": "Clean, complete answers; work they share is finished, not half-done",
+          "5": "Cares about details nobody asked for; talks about redoing work until it's right"
+        },
+        "client": {
+          "1": "Only talks about what they want to make; no sense that the work serves a business",
+          "3": "Understands the content exists to get a client a result",
+          "5": "Frames their own ideas around what a client's audience would respond to"
+        },
+        "ownership": {
+          "1": "Vague goals, blames tools or circumstances, 'tell me what to do'",
+          "3": "Specific about what they want to learn; finishes what they start",
+          "5": "Already self-teaching, asks good questions, would run a recurring task without being chased"
+        }
+      }
+    },
+    "decision": {
+      "advanceToCall": "Skill ≥ 3 with no criterion at 1, every value ≥ 3",
+      "hireBar": "Shows up reliably and coachable on the call; one recurring shoot or task they can own"
+    }
+  }
+}

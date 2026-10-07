@@ -1,0 +1,463 @@
+{
+  "slug": "video-editor-intern",
+  "title": "Video Editor Intern",
+  "status": "open",
+  "location": "In person — Provo, UT",
+  "type": "Internship · Unpaid · 5–10+ hrs/wk",
+  "summary": "Learn to cut short-form social video for real clients — hooks, pacing, sound and polish — alongside our editors.",
+  "intro": [
+    "Peak Exposure Media is a video-first content marketing agency in Provo, Utah. We make cinematic social content for premium brands in home building, design and lifestyle, and we act as the outsourced marketing department for most of our clients. We're looking for a Video Editor Intern to cut real client work alongside our editors.",
+    "This is an unpaid, in-person internship: 5–10 hours a week minimum (more if you want it), any start date, one semester or longer. You'll get full access to our gear and office, a stipend for travel to client locations, and lunch on us at team meetings. If you need it for school credit, we'll sign whatever your program needs.",
+    "Here's the honest deal. You'll own one real, recurring piece of client work for the whole semester and get good at it, with our team coaching you along the way. That might be cutting Reels from footage our videographers shoot, captions and cover frames, organizing and logging footage, or a recurring series for one client. You don't need to be great yet. You do need a baseline — this isn't a start-from-zero program — and you need to care about getting better.",
+    "We hire for four things: creative bravery, excellence over easy, client obsession and an ownership mentality. Interns too."
+  ],
+  "processNote": "Two steps, both before an interview: a short application and a short written assessment. No test project. We reply to everyone within 24 hours of each step.",
+  "values": [
+    {
+      "key": "bravery",
+      "name": "Creative Bravery",
+      "desc": "Push past \"safe\" and generic."
+    },
+    {
+      "key": "excellence",
+      "name": "Excellence Over Easy",
+      "desc": "Quality matters; don't rush or choose the easy route."
+    },
+    {
+      "key": "client",
+      "name": "Client-Obsessed",
+      "desc": "Care deeply about the client's results, not just completing deliverables."
+    },
+    {
+      "key": "ownership",
+      "name": "Ownership Mentality",
+      "desc": "Act like it's your company, not just a job."
+    }
+  ],
+  "flow": {
+    "autoAdvanceToAssessment": true
+  },
+  "stages": {
+    "application": {
+      "title": "Application",
+      "blurb": "About 10 minutes. We'll ask what you edit in, for two things you've cut, and what you want to learn.",
+      "fields": [
+        {
+          "id": "name",
+          "label": "Full name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "email",
+          "label": "Email",
+          "type": "email",
+          "required": true
+        },
+        {
+          "id": "phone",
+          "label": "Phone",
+          "type": "text",
+          "required": true
+        },
+        {
+          "id": "city",
+          "label": "Where you live (city)",
+          "type": "text",
+          "required": true,
+          "help": "This internship is in person at our Provo office, with occasional client shoots along the Wasatch Front."
+        },
+        {
+          "id": "school",
+          "label": "Where you're at right now",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Student — college or university",
+            "Student — high school",
+            "Recent grad or between things",
+            "Not in school, early in my career"
+          ]
+        },
+        {
+          "id": "credit",
+          "label": "Do you need this to count for school credit?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Yes — I'll need paperwork signed",
+            "No",
+            "Not sure yet"
+          ]
+        },
+        {
+          "id": "hours",
+          "label": "Hours per week you can commit, in person",
+          "type": "select",
+          "required": true,
+          "options": [
+            "15+",
+            "10–15",
+            "5–10",
+            "Under 5"
+          ],
+          "knockout": {
+            "in": [
+              "Under 5"
+            ],
+            "reason": "Under 5 hours per week"
+          }
+        },
+        {
+          "id": "days",
+          "label": "Days and times you're usually free to be at the office",
+          "type": "text",
+          "required": true,
+          "placeholder": "e.g. Tue/Thu afternoons, Fridays all day"
+        },
+        {
+          "id": "start",
+          "label": "When could you start?",
+          "type": "date",
+          "required": true
+        },
+        {
+          "id": "length",
+          "label": "How long are you hoping to intern?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "One semester",
+            "Two semesters",
+            "Summer",
+            "Open-ended"
+          ]
+        },
+        {
+          "id": "software",
+          "label": "Editing software you've used",
+          "type": "text",
+          "required": true,
+          "group": "Editing background",
+          "placeholder": "e.g. Premiere Pro, CapCut, DaVinci Resolve, Final Cut, iMovie",
+          "help": "Any of them is fine. We mostly work in Premiere Pro; we'll teach you."
+        },
+        {
+          "id": "finished",
+          "label": "How many videos have you actually finished and exported?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "None yet — I've played around but never finished one",
+            "1–5",
+            "6–20",
+            "More than 20"
+          ],
+          "knockout": {
+            "in": [
+              "None yet — I've played around but never finished one"
+            ],
+            "reason": "Has never finished an edit"
+          },
+          "autoScore": {
+            "map": {
+              "None yet — I've played around but never finished one": 1,
+              "1–5": 2,
+              "6–20": 3,
+              "More than 20": 4
+            },
+            "skill": "craft",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "level",
+          "label": "Which best describes where you are",
+          "type": "select",
+          "required": true,
+          "options": [
+            "I've opened the software but haven't finished a real project",
+            "I can cut a clean video with music, titles and basic transitions",
+            "I'm comfortable with pacing, sound design, color and effects basics",
+            "I've edited for other people and taken feedback through revisions"
+          ],
+          "knockout": {
+            "in": [
+              "I've opened the software but haven't finished a real project"
+            ],
+            "reason": "Hasn't finished a real project"
+          },
+          "autoScore": {
+            "map": {
+              "I've opened the software but haven't finished a real project": 1,
+              "I can cut a clean video with music, titles and basic transitions": 2,
+              "I'm comfortable with pacing, sound design, color and effects basics": 3,
+              "I've edited for other people and taken feedback through revisions": 4
+            },
+            "skill": "craft",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "short_form",
+          "label": "Have you cut vertical short-form (Reels, TikToks, Shorts)?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "No",
+            "A few",
+            "It's most of what I make"
+          ],
+          "autoScore": {
+            "map": {
+              "No": 1,
+              "A few": 3,
+              "It's most of what I make": 4
+            },
+            "skill": "shortform",
+            "note": "self-reported"
+          }
+        },
+        {
+          "id": "computer",
+          "label": "Do you have your own computer that runs editing software?",
+          "type": "select",
+          "required": true,
+          "options": [
+            "Yes",
+            "Yes, but it struggles",
+            "No — I'd need to use office machines"
+          ],
+          "help": "Not a dealbreaker — we have edit stations at the office."
+        },
+        {
+          "id": "edit_1",
+          "label": "Something you edited — your best (link)",
+          "type": "url",
+          "required": true,
+          "group": "Show us two things you've cut",
+          "help": "YouTube, Instagram, TikTok, Drive, Vimeo — anything we can open. Class projects and personal stuff are fine."
+        },
+        {
+          "id": "edit_1_detail",
+          "label": "What it is, what you did on it, and what you'd fix now",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "ownership",
+              "excellence"
+            ],
+            "strong": "Clear about what they personally did vs. others. Honest, specific self-critique ('the first 3 seconds are too slow'). Red flag: nothing they'd change."
+          }
+        },
+        {
+          "id": "edit_2",
+          "label": "A second edit (link)",
+          "type": "url",
+          "required": true
+        },
+        {
+          "id": "edit_2_detail",
+          "label": "What it is and what you did on it",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 60
+        },
+        {
+          "id": "admire",
+          "label": "An editor, creator or brand whose editing you study, and what specifically you've learned from it",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "bravery",
+              "excellence"
+            ],
+            "strong": "Names someone real and a specific technique (how they cut on beat, hold a shot, use silence, hook in 1 second). Red flag: 'MrBeast, it's fast.'"
+          }
+        },
+        {
+          "id": "goals",
+          "label": "What do you want to be able to do by the end of this internship that you can't do today?",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 100,
+          "group": "About you",
+          "aiScore": {
+            "tests": [
+              "ownership",
+              "excellence"
+            ],
+            "strong": "Specific, concrete skills ('cut a Reel from raw footage to a client-ready export in under two hours'), not 'learn more about video.' Shows they've thought about where they're weak."
+          }
+        },
+        {
+          "id": "self_taught",
+          "label": "Something you taught yourself in the last year, and how",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "ownership"
+            ],
+            "strong": "Names a real thing and the path they took (tutorials, copying someone's style, making 20 bad versions). Red flag: nothing, or only things a class made them do."
+          }
+        },
+        {
+          "id": "why_pem",
+          "label": "Why Peak Exposure Media, and why this role?",
+          "type": "textarea",
+          "required": true,
+          "maxWords": 80,
+          "aiScore": {
+            "tests": [
+              "client",
+              "bravery"
+            ],
+            "strong": "Has looked at our work or clients and says something specific. Red flag: could be pasted into any application."
+          }
+        }
+      ]
+    },
+    "assessment": {
+      "title": "Written Assessment",
+      "blurb": "About 20 minutes. Four short questions, 100 words each. No editing required.",
+      "questions": [
+        {
+          "id": "q1",
+          "prompt": "Watch the first three seconds of any Reel you think has a great hook (link it). What exactly makes it work — visually, in the audio, in the text?",
+          "maxWords": 100,
+          "tests": [
+            "excellence",
+            "bravery"
+          ],
+          "skill": "hooks",
+          "strong": "Breaks the hook into parts: the first frame, motion, text on screen, the sound, the promise it makes. Red flag: 'it grabs attention' with no mechanics."
+        },
+        {
+          "id": "q2",
+          "prompt": "You're handed 40 minutes of raw footage from a custom home tour — walkthrough shots, detail shots, the builder talking. Walk us through how you'd turn it into a 30-second Reel, step by step.",
+          "maxWords": 100,
+          "tests": [
+            "ownership",
+            "excellence"
+          ],
+          "skill": "craft",
+          "strong": "Has a process: watch it all and mark selects, find the story or the single best moment, lock the hook, cut to music, then polish. Mentions sound and the first 3 seconds. Red flag: 'pick the best clips and put them together.'"
+        },
+        {
+          "id": "q3",
+          "prompt": "Our videographer shot it beautifully, but the builder's on-camera audio has an AC hum and he rambles. What do you do?",
+          "maxWords": 100,
+          "tests": [
+            "ownership",
+            "client"
+          ],
+          "skill": "problemsolving",
+          "strong": "Tries to fix it (noise reduction, cut around it, music under it, use the best line only, captions), knows when to flag it instead of hiding it, and protects the client from a bad result. Red flag: 'I'd just use it' or giving up."
+        },
+        {
+          "id": "q4",
+          "prompt": "A client comes back with: \"Love it, but can it feel more high-end?\" Nothing else. What changes would you try, and what would you ask them?",
+          "maxWords": 100,
+          "tests": [
+            "client",
+            "bravery"
+          ],
+          "skill": "taste",
+          "strong": "Translates vague feedback into concrete moves (slower pacing, fewer cuts, restrained music, cleaner type, let shots breathe, color) and asks one or two sharp questions with references. Red flag: adds more effects."
+        }
+      ]
+    }
+  },
+  "scoring": {
+    "skill": {
+      "floor": 3,
+      "criteria": [
+        {
+          "id": "craft",
+          "name": "Editing baseline (from their links)",
+          "weight": 2,
+          "anchors": {
+            "1": "Cuts are random, audio clips, nothing finished",
+            "3": "Clean cuts, on-beat, decent pacing, finished and exported",
+            "5": "Shows real taste already — pacing, sound and polish you'd put in front of a client with light notes"
+          }
+        },
+        {
+          "id": "hooks",
+          "name": "Understands hooks and short-form",
+          "weight": 2,
+          "anchors": {
+            "1": "Can't explain why a hook works",
+            "3": "Breaks a hook into visual, audio and text parts",
+            "5": "Thinks in retention — knows what the first second has to do and why"
+          }
+        },
+        {
+          "id": "taste",
+          "name": "Taste and reference",
+          "weight": 1,
+          "anchors": {
+            "1": "No references, or only 'fast and flashy'",
+            "3": "Studies specific editors and can name techniques",
+            "5": "Understands restraint and premium feel; references match our clients"
+          }
+        },
+        {
+          "id": "problemsolving",
+          "name": "Problem-solving with footage",
+          "weight": 1,
+          "anchors": {
+            "1": "Gives up or hides the problem",
+            "3": "Tries sensible fixes and flags what can't be fixed",
+            "5": "Turns a limitation into a creative choice"
+          }
+        },
+        {
+          "id": "shortform",
+          "name": "Short-form experience",
+          "weight": 1,
+          "anchors": {
+            "1": "Never cut vertical",
+            "3": "Has cut a handful of Reels or TikToks",
+            "5": "Short-form is their native format"
+          }
+        }
+      ]
+    },
+    "values": {
+      "floor": 3,
+      "anchors": {
+        "bravery": {
+          "1": "Everything they point to is safe and interchangeable; can't name a creative risk they've taken",
+          "3": "Has at least one distinct creative choice they can defend",
+          "5": "Clear taste and a point of view already forming; tries things most beginners wouldn't"
+        },
+        "excellence": {
+          "1": "Shortcuts visible: thin answers, broken links, didn't read the questions",
+          "3": "Clean, complete answers; work they share is finished, not half-done",
+          "5": "Cares about details nobody asked for; talks about redoing work until it's right"
+        },
+        "client": {
+          "1": "Only talks about what they want to make; no sense that the work serves a business",
+          "3": "Understands the content exists to get a client a result",
+          "5": "Frames their own ideas around what a client's audience would respond to"
+        },
+        "ownership": {
+          "1": "Vague goals, blames tools or circumstances, 'tell me what to do'",
+          "3": "Specific about what they want to learn; finishes what they start",
+          "5": "Already self-teaching, asks good questions, would run a recurring task without being chased"
+        }
+      }
+    },
+    "decision": {
+      "advanceToCall": "Skill ≥ 3 with no criterion at 1, every value ≥ 3",
+      "hireBar": "Shows up reliably and coachable on the call; one recurring series they can own"
+    }
+  }
+}
