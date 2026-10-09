@@ -116,6 +116,8 @@ form{display:grid;gap:18px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .pill.back{text-decoration:none;color:var(--gold-light);border-color:var(--gold);transition:background .15s}
 .pill.back:hover{background:var(--gold-dim)}
+.pill.admin-link{text-decoration:none;color:var(--muted-2);border-color:var(--line)}
+.pill.admin-link:hover{color:var(--gold-light);border-color:var(--gold)}
 .app-footer a{color:inherit;text-decoration:none}
 .app-footer a:hover{color:var(--gold-light)}
 .pill{display:inline-block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted)}
